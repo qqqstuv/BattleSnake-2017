@@ -7,4 +7,5 @@ def initializeMapSize(width, height):
 	mapSize = [width, height]
 
 def getMapSize(): # not sure if should approach Python with this OOP
+	global mapSize
 	return mapSize
