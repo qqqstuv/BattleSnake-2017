@@ -38,7 +38,7 @@ def move():
 
     # TODO: Do things with data
     directions = ['up', 'down', 'left', 'right']
-    print data
+    print data.snakes
     global count
     global isTrue
     if count != 10:
