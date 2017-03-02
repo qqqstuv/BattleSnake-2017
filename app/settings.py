@@ -11,12 +11,14 @@ def initializeMap(w, h):
 	height = h
 	Map = [[y for y in range(h)] for x in range(w)]
 	resetMap()
+	print "HEIGHT is " + height
 
 def getMap(): # not sure if should approach Python with this OOP
 	global Map
 	return Map
 
 def resetMap():
+	global height
 	for x in range(height):
 		for y in range(width):
 			Map[x][y] = 0
