@@ -1,4 +1,4 @@
-import bottle,os
+import bottle,os,random
 from timeit import default_timer as timer
 import helper,settings
 
