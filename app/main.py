@@ -1,6 +1,6 @@
 import bottle
 import os
-import random
+import time
 from helper import possibleMove
 
 isTrue = False
@@ -34,11 +34,11 @@ def start():
 
 @bottle.post('/move')
 def move():
+    start = time.time()
     data = bottle.request.json
-
     # TODO: Do things with data
     directions = ['up', 'down', 'left', 'right']
-    print data.get('snakes')
+    possibleMove(None, data.get('snakes'))
     global count
     global isTrue
     if count != 10:
@@ -46,6 +46,9 @@ def move():
     else:
         isTrue = True
         print isTrue
+
+    end = time.time()
+    print "TIME TO RESPONSE: " + (end - start)
     return {
         'move': 'up',
         'taunt': 'battlesnake-python!'

@@ -1,5 +1,6 @@
 def possibleMove(coord, snakeCoords):
-	pass
-
+	for snake in snakeCoords:
+		coordinates = snake.get('coords')
+		print coordinates
 def debug():
 	pass
