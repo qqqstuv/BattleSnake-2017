@@ -2,6 +2,9 @@
 
 mapSize = None
 
-def initialize(width, height):
+def initializeMapSize(width, height):
 	global mapSize
 	mapSize = [width, height]
+
+def getMapSize(): # not sure if should approach Python with this OOP
+	return mapSize

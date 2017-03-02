@@ -1,8 +1,7 @@
 import settings
 
 def possibleMove(coord, snakeCoords):
-	global mapSize
-	print mapSize
+	print settings.getMapSize()
 	for snake in snakeCoords:
 		coordinates = snake.get('coords')
 		print coordinates
