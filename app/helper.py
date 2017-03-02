@@ -8,7 +8,6 @@ def possibleMove(coord, snakeCoords):
 		coordinates = snake.get('coords')
 		for xy in coordinates:
 			settings.getMap()[xy[0]][xy[1]] = 1
-
 	print settings.getMap()
 
 def debug():
