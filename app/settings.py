@@ -33,5 +33,5 @@ def isOverlap(coord):
 
 def isCollided(coord):
 	if isOutOfBound(coord) or isOverlap(coord):
-		return true
-	return false
+		return True
+	return False
