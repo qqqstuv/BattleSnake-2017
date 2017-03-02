@@ -32,6 +32,4 @@ def isOverlap(coord):
 	return (Map[coord[0]] and Map[coord[0]][coord[1]])
 
 def isCollided(coord):
-	if isOutOfBound(coord) or isOverlap(coord):
-		return True
-	return False
+	return isOutOfBound(coord)

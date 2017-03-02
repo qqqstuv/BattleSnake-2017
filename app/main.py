@@ -37,7 +37,7 @@ def move():
     directions = helper.possibleMove(data.get('you'), data.get('snakes'))
 
     end = timer()
-    print "TIME TO RESPONSE: %.6f" % (end - start)
+    # print "TIME TO RESPONSE: %.6f" % (end - start)
     return {
         'move': directions.values()[0],
         'taunt': 'battlesnake-python!'

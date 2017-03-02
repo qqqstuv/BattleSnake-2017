@@ -22,11 +22,11 @@ def possibleMove(id, snakeCoords):
 
 #check four possible moves of the head
 def possibleAround(head, directions):
-	if settings.isCollided([head[0] + 1, head[0]]):
+	if settings.isCollided([[head[0] + 1, head[0]]]):
 		del directions['0']
-	if settings.isCollided([head[0], head[0] + 1]):
+	if settings.isCollided([[head[0], head[0] + 1]]):
 		del directions['1']
-	if settings.isCollided([head[0] - 1, head[0]]):
+	if settings.isCollided([[head[0] - 1, head[0]]]):
 		del directions['2']
-	if settings.isCollided([head[0], head[0] - 1]):
+	if settings.isCollided([[head[0], head[0] - 1]]):
 		del directions['3']
