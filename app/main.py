@@ -14,6 +14,8 @@ def start():
     board_width = data['width']
     board_height = data['height']
     settings.initializeMapSize(board_width, board_height) #set global map size
+    print "MAP SIZE IS"
+    print settings.getMapSize()
     head_url = '%s://%s/static/head.png' % (
         bottle.request.urlparts.scheme,
         bottle.request.urlparts.netloc
