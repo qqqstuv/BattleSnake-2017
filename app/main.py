@@ -1,7 +1,7 @@
 import bottle
 import os
 import random
-from helper.py import possibleMove
+from helper import possibleMove
 
 isTrue = False
 count = 0
