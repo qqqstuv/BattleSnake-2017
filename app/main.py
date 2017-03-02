@@ -13,7 +13,7 @@ def start():
     game_id = data['game_id']
     board_width = data['width']
     board_height = data['height']
-    settings.initialize(board_width, board_height)
+    settings.initialize(board_width, board_height) #set global map size
     head_url = '%s://%s/static/head.png' % (
         bottle.request.urlparts.scheme,
         bottle.request.urlparts.netloc
