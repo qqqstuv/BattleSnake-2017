@@ -39,7 +39,7 @@ def move():
     end = timer()
     # print "TIME TO RESPONSE: %.6f" % (end - start)
     return {
-        'move': directions.values()[0],
+        'move': random.choice(directions.values()),
         'taunt': 'battlesnake-python!'
     }
 
