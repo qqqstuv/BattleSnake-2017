@@ -39,11 +39,13 @@ def move():
     # TODO: Do things with data
     directions = ['up', 'down', 'left', 'right']
     print data
-    if global count != 10:
-        global  count += 1
+    global count
+    global isTrue
+    if count != 10:
+        count += 1
     else:
-        global isTrue = True
-        print global isTrue
+        isTrue = True
+        print isTrue
     return {
         'move': 'up',
         'taunt': 'battlesnake-python!'
