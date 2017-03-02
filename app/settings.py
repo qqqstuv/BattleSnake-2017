@@ -22,3 +22,14 @@ def resetMap():
 	for x in range(height):
 		for y in range(width):
 			Map[x][y] = 0
+
+#return if the given coord is bounded on the map
+def isBounded(coord):
+	return not (coord[0] < 0 or coord[0] > width or coord[1] < 0 or coord[1] > height)
+
+#return true if the given coord overlaps with an entitiy on the map
+def isOverlap(coord):
+	return (Map[coord[0]] and Map[coord[0]][coord[1]])
+
+def isCollided(coord):
+	return isBounded(coord) or isOverlap(coord)

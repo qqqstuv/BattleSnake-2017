@@ -34,13 +34,12 @@ def move():
     start = timer()
     data = bottle.request.json
     # TODO: Do things with data
-    directions = ['up', 'down', 'left', 'right']
-    helper.possibleMove(data.get('you'), data.get('snakes'))
+    directions = helper.possibleMove(data.get('you'), data.get('snakes'))
 
     end = timer()
     print "TIME TO RESPONSE: %.6f" % (end - start)
     return {
-        'move': 'left',
+        'move': directions.values()[0],
         'taunt': 'battlesnake-python!'
     }
 
