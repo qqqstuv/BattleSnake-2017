@@ -26,8 +26,8 @@ def possibleAround(head, directions):
 	if settings.isCollided([head[0] + 1, head[1]]):
 		del directions['0']
 	if settings.isCollided([head[0], head[1] + 1]):
-		del directions['1']
+		del directions['3']
 	if settings.isCollided([head[0] - 1, head[1]]):
 		del directions['2']
 	if settings.isCollided([head[0], head[1] - 1]):
-		del directions['3']
+		del directions['1']
