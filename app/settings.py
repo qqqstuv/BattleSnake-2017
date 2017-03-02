@@ -1,11 +1,11 @@
 #Hold global data structure so that subclass can access
 
-mapSize = None
+Map = None
 
-def initializeMapSize(width, height):
-	global mapSize
-	mapSize = [width, height]
+def initializeMap(width, height):
+	global Map
+	Map = [[y for y in range(height)] for x in range(width)]
 
-def getMapSize(): # not sure if should approach Python with this OOP
-	global mapSize
-	return mapSize
+def getMap(): # not sure if should approach Python with this OOP
+	global Map
+	return Map
