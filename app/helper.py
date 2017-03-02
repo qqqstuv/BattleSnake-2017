@@ -14,9 +14,10 @@ def possibleMove(id, snakeCoords):
 			settings.getMap()[xy[0]][xy[1]] = 1
 		if snake.get('id') == id:
 			head = snake.get('coords')[0]
-	print settings.getMap()
-	print head
+	# print settings.getMap()
+	# print head
 	possibleAround(head, directions)
+	print directions
 	return directions
 
 #check four possible moves of the head
