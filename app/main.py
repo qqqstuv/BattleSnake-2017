@@ -1,10 +1,6 @@
-import bottle
-import os
+import bottle,os
 from timeit import default_timer as timer
-from helper import possibleMove
-
-isTrue = False
-count = 0
+import helper,settings
 
 @bottle.route('/static/<path:path>')
 def static(path):
@@ -17,6 +13,7 @@ def start():
     game_id = data['game_id']
     board_width = data['width']
     board_height = data['height']
+    settings.initialize(board_width, board_height)
     head_url = '%s://%s/static/head.png' % (
         bottle.request.urlparts.scheme,
         bottle.request.urlparts.netloc
@@ -38,14 +35,7 @@ def move():
     data = bottle.request.json
     # TODO: Do things with data
     directions = ['up', 'down', 'left', 'right']
-    possibleMove(None, data.get('snakes'))
-    global count
-    global isTrue
-    if count != 10:
-        count += 1
-    else:
-        isTrue = True
-        print isTrue
+    helper.possibleMove(None, data.get('snakes'))
 
     end = timer()
     print "TIME TO RESPONSE: %.6f" % (end - start)
