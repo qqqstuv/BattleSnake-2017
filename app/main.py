@@ -36,9 +36,9 @@ def move():
 
     # TODO: Do things with data
     directions = ['up', 'down', 'left', 'right']
-
+    print data
     return {
-        'move': 'down',
+        'move': 'up',
         'taunt': 'battlesnake-python!'
     }
 
