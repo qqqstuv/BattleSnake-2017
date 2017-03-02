@@ -4,9 +4,10 @@ Map = None
 
 def initializeMap(width, height):
 	global Map
-	Map = [[0 for y in range(height)] for x in range(width)]
-	print Map
-
+	Map = [[y for y in range(height)] for x in range(width)]
+	for x in range(height):
+		for y in range(width):
+			Map[x][y] = 0
 
 def getMap(): # not sure if should approach Python with this OOP
 	global Map
