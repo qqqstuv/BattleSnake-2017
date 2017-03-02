@@ -17,9 +17,6 @@ def getMap(): # not sure if should approach Python with this OOP
 	return Map
 
 def resetMap():
-	global Map
-	global height
-	global width
 	for x in range(height):
 		for y in range(width):
 			Map[x][y] = 0
