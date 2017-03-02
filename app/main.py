@@ -1,6 +1,6 @@
 import bottle
 import os
-import time
+from timeit import default_timer as timer
 from helper import possibleMove
 
 isTrue = False
@@ -34,7 +34,7 @@ def start():
 
 @bottle.post('/move')
 def move():
-    start = time.time()
+    start = timer()
     data = bottle.request.json
     # TODO: Do things with data
     directions = ['up', 'down', 'left', 'right']
@@ -47,8 +47,8 @@ def move():
         isTrue = True
         print isTrue
 
-    end = time.time()
-    print "TIME TO RESPONSE: %.4f" % (end - start)
+    end = timer()
+    print "TIME TO RESPONSE: %.6f" % (end - start)
     return {
         'move': 'up',
         'taunt': 'battlesnake-python!'
