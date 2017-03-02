@@ -29,7 +29,7 @@ def isOutOfBound(coord):
 
 #return true if the given coord overlaps with an entitiy on the map
 def isOverlap(coord):
-	return (Map[coord[0]] and Map[coord[0]][coord[1]])
-
+	# return (Map[coord[0]] and Map[coord[0]][coord[1]])
+	return (Map[coord[0]][coord[1]] == 1)
 def isCollided(coord):
 	return isOutOfBound(coord) or isOverlap(coord)

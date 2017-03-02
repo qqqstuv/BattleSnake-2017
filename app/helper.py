@@ -1,10 +1,7 @@
 import settings
 
-
-
-
 # return all possible moves in one block surrounding area
-def possibleMove(id, snakeCoords):
+def possibleMove(id, snakeCoords, food):
 	directions = {'0': 'right', '1': 'up', '2': 'left', '3': 'down'}
 	settings.resetMap() # reset the map to be 0
 	head = None
@@ -14,7 +11,8 @@ def possibleMove(id, snakeCoords):
 			settings.getMap()[xy[0]][xy[1]] = 1
 		if snake.get('id') == id:
 			head = snake.get('coords')[0]
-			print snake.get('coords')
+	for xy in food:
+		settings.getMap()[xy[0]][xy[1]] = 2
 	# print settings.getMap()
 	print head
 	possibleAround(head, directions)
