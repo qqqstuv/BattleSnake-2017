@@ -48,7 +48,7 @@ def move():
         print isTrue
 
     end = time.time()
-    print "TIME TO RESPONSE: " + (end - start)
+    print "TIME TO RESPONSE: %.4f" % (end - start)
     return {
         'move': 'up',
         'taunt': 'battlesnake-python!'
