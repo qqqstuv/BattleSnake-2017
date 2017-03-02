@@ -35,7 +35,7 @@ def move():
     data = bottle.request.json
     # TODO: Do things with data
     directions = ['up', 'down', 'left', 'right']
-    helper.possibleMove(None, data.get('snakes'))
+    helper.possibleMove(data.get('you'), data.get('snakes'))
 
     end = timer()
     print "TIME TO RESPONSE: %.6f" % (end - start)
