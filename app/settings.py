@@ -3,6 +3,7 @@
 Map = None
 height = None
 width = None
+
 def initializeMap(w, h):
 	global Map
 	global height
@@ -11,6 +12,7 @@ def initializeMap(w, h):
 	height = h
 	Map = [[y for y in range(h)] for x in range(w)]
 	resetMap()
+	print "HEIGHT is ", height # need this line because without this resetMap wouldnt recognize height/width
 
 def getMap(): # not sure if should approach Python with this OOP
 	global Map

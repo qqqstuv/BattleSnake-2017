@@ -40,7 +40,7 @@ def move():
     end = timer()
     print "TIME TO RESPONSE: %.6f" % (end - start)
     return {
-        'move': 'up',
+        'move': 'left',
         'taunt': 'battlesnake-python!'
     }
 
