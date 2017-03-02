@@ -4,7 +4,9 @@ Map = None
 height = None
 width = None
 def initializeMap(w, h):
-	global Map, height, width
+	global Map
+	global height
+	global width
 	width = w
 	height = h
 	Map = [[y for y in range(h)] for x in range(w)]
@@ -15,7 +17,9 @@ def getMap(): # not sure if should approach Python with this OOP
 	return Map
 
 def resetMap():
-	global Map, height, width
+	global Map
+	global height
+	global width
 	for x in range(height):
 		for y in range(width):
 			Map[x][y] = 0
