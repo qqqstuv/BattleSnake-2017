@@ -101,14 +101,14 @@ def findHeatMap(head, walls, width, height):
             if wall[0][0] < x_Size[0] or wall[0][0] > x_Size[1] or wall[0][1] < y_Size[0] or wall[0][1] > y_Size[1]:
                 continue
             for x in range(wall[0][0]-threatDepthConstant, wall[0][0] + threatDepthConstant):
-               if(not(x<x_Size[0] or x>x_Size[1])):
+               if not(x < x_Size[0] or x >= x_Size[1]):
                     yCoff = -threatDepthConstant
                     xCoff = xCoff + 1
                     for y in range(wall[0][1]-threatDepthConstant, wall[0][1] + threatDepthConstant):
-                        if(not(y<y_Size[0] or y>y_Size[1])):
+                        if not(y < y_Size[0] or y >= y_Size[1]):
                             yCoff = yCoff + 1
                             weight = heatMap.get((x,y), 0)
-                            distanceLoad = (xCoff**2+yCoff**2)**(1/2.0)
+                            distanceLoad = math.sqrt(xCoff**2+yCoff**2)
                             if distanceLoad == 0:
                                 distanceLoad = 1
                             heatMap[(x,y)] = weight + wall[1]/distanceLoad
