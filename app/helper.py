@@ -3,6 +3,7 @@ import settings, a_star, math, sys
 # Return all possible moves in one block surrounding area
 def handler(id, snakeCoords, food):
 	settings.getMap().walls = [] # reset the map's walls to be 0
+	settings.getMap().weights = {}
 	head = None # [x,y]
 	otherheads = []
 	for snake in snakeCoords:
