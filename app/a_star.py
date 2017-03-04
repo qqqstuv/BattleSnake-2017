@@ -36,7 +36,7 @@ def a_star_search(graph, start, goal):
     came_from[start] = None
     cost_so_far[start] = 0
 
-    # graph.weights = findHeatMap(start, graph.walls, graph.width, graph.height) # Update based on where the head is
+    graph.weights = findHeatMap(start, graph.walls, graph.width, graph.height) # Update based on where the head is
     print "DEBUG GRAPH WEIGHTS:", graph.weights
     while not frontier.empty():
         current = frontier.get()
