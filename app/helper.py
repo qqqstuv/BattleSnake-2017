@@ -24,7 +24,7 @@ def handler(id, snakeCoords, food):
 			foodLevel = snake.get('health_points')
 			ourSnakeLength = length
 		else:
-			otherheadsAndDuration.append(makeWall(snakeCoords.get('coords')[0], 0, length)) # tuple of (coord, duration) default 0
+			otherheadsAndDuration.append(makeWall(snake.get('coords')[0], 0, length)) # tuple of (coord, duration) default 0
 			otherSnakeLengths.append(length)
 			otherheadsAndHealth.append(snake.get('coords')[0], snake.get('health_points'))
 	for xy in food:
