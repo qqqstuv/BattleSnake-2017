@@ -111,7 +111,7 @@ def findEnemy(head, otherheads, graph):
 				isPotential = True
 			else:
 				neighbors.append(graph.neighbors(neighbor))
-		if isPotential = True:
+		if isPotential == True:
 			# for neighbor in neighbors:
 			# 	a_star.findHeatMap(neighbor, graph.walls, graph.width, graph.height) # This is not efficient. SHould CHange this
 			return neighbors[0] # return the (x,y) we should go for
