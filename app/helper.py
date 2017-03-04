@@ -8,7 +8,8 @@ def handler(id, snakeCoords, food):
 	for snake in snakeCoords:
 		coordinates = snake.get('coords')
 		for xy in coordinates:
-			settings.getMap().walls.append([xy[0]][xy[1]])
+			print settings.getMap().walls
+			settings.getMap().walls.append( ([xy[0]][xy[1]], 0) ) # tuple of coord and weight default 0
 		if snake.get('id') == id:
 			head = snake.get('coords')[0]
 		else:

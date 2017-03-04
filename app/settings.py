@@ -42,8 +42,8 @@ class SquareGrid(object):
         (x, y) = id
         return 0 <= x < self.width and 0 <= y < self.height
     
-    def passable(self, id):
-        return id not in self.walls
+    def passable(self, id): # self.walls contains tuple of ((x,y), weight)
+        return id not in [item[0] for item in self.walls]
     
     def neighbors(self, id):
         (x, y) = id
