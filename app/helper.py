@@ -48,9 +48,7 @@ def possibleAround(head, directions):
 
 # Calculate distance between 2 points
 def distance(a,b):
-	a = numpy.array(a)
-	b = numpy.array(b)
-	return numpy.linalg.norm(a-b)
+	return dist = math.hypot(a[0] - b[0], a[1] - b[1])
 
 # Get the best food possible on the map
 def getBestFood(head, food, otherheads):
