@@ -33,7 +33,7 @@ def isOverlap(coord):
 def isCollided(coord):
 	return isOutOfBound(coord) or isOverlap(coord)
 
-class SquareGrid:
+class SquareGrid(object):
     def __init__(self, width, height):
         self.width = width
         self.height = height
