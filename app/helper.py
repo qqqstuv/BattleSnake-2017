@@ -24,9 +24,9 @@ def handler(id, snakeCoords, food):
 			foodLevel = snake.get('health_points')
 			ourSnakeLength = length
 		else:
-			otherheadsAndDuration.append(makeWall(snake.get('coords')[0], 0, length)) # tuple of (coord, duration) default 0
+			otherheadsAndDuration.append(makeWall(snake.get('coords')[0], 0,length)) # tuple of (coord, duration) default 0
 			otherSnakeLengths.append(length)
-			otherheadsAndHealth.append(snake.get('coords')[0], snake.get('health_points'))
+			otherheadsAndHealth.append((snake.get('coords')[0], snake.get('health_points')))
 	for xy in food:
 		graph.food.append( (xy[0],xy[1]) )
 	#Sort snakehead list based on health
