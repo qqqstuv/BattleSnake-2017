@@ -128,13 +128,13 @@ def bfsEnemy(graph, head):
 
 # walls is ((x,y), weight)
 def findHeatMap(head, headList, walls, width, height):
-    num = 15 #has to be odd
-    threatDepthConstant = 3 #has to be odd divided by 2
-    borderWeight = 1 #borderWeight
-    beta = 1 # standard coefficient for border
-    theta = 1.5 # coefficient for duration
-    defaultHeadWeight = theta*100 #snakeHeadWeight multiplier
-    alpha = None
+	num = 15 #has to be odd
+	threatDepthConstant = 5 #has to be odd divided by 2
+	borderWeight = 3 #borderWeight
+	beta = 4 # standard coefficient for border
+	theta = 1.5 # coefficient for duration
+	defaultHeadWeight = theta*15 #snakeHeadWeight multiplier
+	alpha = None
     for i in headList:
         walls.remove(i)
         walls.append((i[0],defaultHeadWeight))
@@ -151,27 +151,33 @@ def findHeatMap(head, headList, walls, width, height):
                 heatMap[point] = points[point]
         
 
-    return heatMap
+    for wall in walls:
+		if heatMap.has_key(wall[0]):
+			del heatMap[wall[0]]
+	return heatMap
     
 def pointsAroundCoord(wall, num, x_Size, y_Size):
-    points = {}
-    point = wall[0]
-    startLeft = point[0] - num/2
-    endLeft = point[0] + num/2
-    startTop = point[1] - num/2
-    endTop = point[1] + num/2
-    for i in range(startLeft, endLeft+1):
-        for j in range(startTop, endTop+1):
-            if(i< x_Size[0] or j< y_Size[0] or (i==point[0] and j == point[1])):
-                continue
-            if( i> x_Size[1] or j > y_Size[1]):
-                continue
-            if points.has_key((i,j)):
-                points[(i,j)] = points[(i,j)] + wall[1]
-            else:
-                points[(i,j)] = wall[1]
-    
-    return points
+  	points = {}
+	point = wall[0]
+	startLeft = point[0] - num/2
+	endLeft = point[0] + num/2
+	startTop = point[1] - num/2
+	endTop = point[1] + num/2
+	for i in range(startLeft, endLeft+1):
+		for j in range(startTop, endTop+1):
+			if(i< x_Size[0] or j< y_Size[0] or (i==point[0] and j == point[1])):
+				continue
+			if( i> x_Size[1] or j > y_Size[1]):
+				continue
+			divisor = 2*math.sqrt(((abs(point[0])-abs(i))**2) + ((abs(point[1]) - abs(j))**2))
+			if(divisor == 0):
+					divisor = 1
+			if points.has_key((i,j)):
+				points[(i,j)] = points[(i,j)] + wall[1]/divisor
+			else:
+				points[(i,j)] = wall[1]/divisor
+	
+	return points
     
 def addBorders(walls, width, height, borderWeight):
     for i in range(-1, width+1): #x = -1 to max, y = max
