@@ -1,35 +1,95 @@
-import settings, a_star, math, sys
+import settings, a_star, math, sys, dijkstra, operator
 
 # Return all possible moves in one block surrounding area
 def handler(id, snakeCoords, food):
-	settings.getMap().walls = [] # reset the map's walls to be 0
-	settings.getMap().weights = {}
+	graph = settings.getMap()
+	graph.walls = [] # reset the map's walls to be 0
+	graph.weights = {}
 	head = None # [x,y]
+	foodLevel = 0
+	ourSnakeLength = 0
 	otherheads = []
+	otherSnakeLengths = []
+	otherheadsAndHealth = []
 	for snake in snakeCoords:
 		coordinates = snake.get('coords')
 		length = len(coordinates)
 		for index, xy in enumerate(coordinates):
-			# print settings.getMap().walls
+			# print graph.walls
 			# print ([xy[0],xy[1]], 0)
-			settings.getMap().walls.append(makeWall(xy, index, length)) # tuple of (coord, duration) default 0
-		if snake.get('id') == id:
+			graph.walls.append(makeWall(xy, index, length)) # tuple of (coord, duration) default 0
+		if snake.get('id') == id: # Our snake
 			head = snake.get('coords')[0]
+			foodLevel = snake.get('health_points')
+			ourSnakeLength = length
 		else:
-			otherheads.append(snake.get('coords')[0])
+			otherSnakeLengths.append(length)
+			otherheadsAndHealth.append(snake.get('coords')[0], snake.get('health_points'))
 	for xy in food:
-		settings.getMap().food.append( (xy[0],xy[1]) )
-	# print settings.getMap()
-	print "HEAD: ", head
-	# possibleAround(head, directions)
+		graph.food.append( (xy[0],xy[1]) )
+	#Sort snakehead list based on health
+	otherheadsAndHealth.sort(key=lambda headAndHealth: headAndHealth[1])
+	otherheads = [headAndHealth[0] for headAndHealth in otherheadsAndHealth]
 
-	toFoodObject = findFood(head, food, otherheads) # (d from head to food, xy)
-	print "FOOD OBJECT: ", toFoodObject
-	movePath = applyAStar(head, toFoodObject[1])
-	print "MOVEPATH: ", movePath
-	final = directionToPoint(head, movePath[1]) # index 1 is because 0 is our goal
-	print "FINAL DECISION: " + final
+	FOOD_SEARCH_THRESHOLD = max(50, 95 - ourSnakeLength * 1) # the longer the less food threshold
+	final = ""
+
+	# MOVE LOGIC
+	if len(otherSnakeLengths) > 2: # if there are more than 2 other snakes
+		if ourSnakeLength > second_largest(otherSnakeLengths): # if our length is ok
+			final = killSnakeMove(head, otherheads, graph)
+		else: # eat more
+			final = getFoodMove(head, food, otherheads)
+	else: # there are 2 other snakes or less
+		if foodLevel < FOOD_SEARCH_THRESHOLD: # if we are hungry
+			final = getFoodMove(head, food, otherheads)
+		else: # kill snakes
+			final = killSnakeMove(head, otherheads, graph)
 	return final
+
+# Find a snake and try to corner it
+def killSnakeMove(head, otherheads, graph):
+	move = findEnemy(head, otherheads, graph)
+	if move == None: # Could not find a snake to go to, then get Safest Move
+		updateHeatMap(head, graph)
+		move = a_star.bfsGetSafeMove(head, graph)
+		print ("SAFE MOVE")
+	else:
+		print ("KILL MOVE")
+	return directionToPoint(head, move)
+
+def updateHeatMap(head, graph):
+	graph.weights = a_star.findHeatMap(head, graph.walls, graph.width, graph.height)
+
+
+def findEnemy(head, otherheads, graph):
+	for aHead in otherheads: # loop through every snakes, snakes are sorted base on health
+		visited = [] # visited nodes 
+		updateHeatMap(aHead, graph)
+		# add possible route through customized bfs on the head
+		came_from, cost_so_far = dijkstra.dijkstra_search(graph, aHead)
+		for key in sorted(cost_so_far.iterkeys()):
+
+
+
+
+		return neighbors[0] # return the (x,y) we should go for
+	return None
+	# if everything null do bfs on own snake
+
+def getFoodMove(head, food, otherheads):
+	toFoodObject = findFood(head, food, otherheads) # (d from head to food, xy)
+	movePath = applyAStar(head, toFoodObject[1])
+	final = directionToPoint(head, movePath[1])
+	# print("FOOD ORIENTED - FOOD OBJECT: %s MOVEPATH: %s FINAL STRING DECISION: %s" % (toFoodObject, movePath[1],final))
+	return final # index 1 is because 0 is our goal
+
+def applyAStar(head, foodCoord):
+	tupleHead = tuple(head)
+	tupleFood = tuple(foodCoord)
+	updateHeatMap(head,settings.getMap())
+	movePath =  a_star.a_star_search(settings.getMap(), tupleHead, tupleFood)
+	return movePath
 
 def makeWall(xy, index, length):
 	return ((xy[0],xy[1]), length - index)
@@ -81,12 +141,18 @@ def findFood(head, food, otherheads):
 	bestFoodObject = getBestFood(head, foodObjects, otherheads)
 	return bestFoodObject
 
-def applyAStar(head, foodCoord):
-	tupleHead = tuple(head)
-	tupleFood = tuple(foodCoord)
-	movePath =  a_star.a_star_search(settings.getMap(), tupleHead, tupleFood)
-	return movePath
 
 
 
 
+def second_largest(numbers):
+    count = 0
+    m1 = m2 = float('-inf')
+    for x in numbers:
+        count += 1
+        if x > m2:
+            if x >= m1:
+                m1, m2 = x, m1            
+            else:
+                m2 = x
+    return m2 if count >= 2 else None

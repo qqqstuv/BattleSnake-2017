@@ -35,10 +35,8 @@ def a_star_search(graph, start, goal):
     cost_so_far = {}
     came_from[start] = None
     cost_so_far[start] = 0
-
-    graph.weights = findHeatMap(start, graph.walls, graph.width, graph.height) # Update based on where the head is
-    print "DEBUG GRAPH WEIGHTS:", graph.weights
-    print "GRAPH WALLS", graph.walls
+    # print "DEBUG GRAPH WEIGHTS:", graph.weights
+    # print "GRAPH WALLS", graph.walls
     while not frontier.empty():
         current = frontier.get()
         
@@ -62,16 +60,24 @@ def a_star_search(graph, start, goal):
     movePath.reverse()
     movePath.append(goal) # add it so that the snake doesn't get confused at the last one it eats
 
-    print "DEBUG MOVEPATH", movePath
+    # print "DEBUG MOVEPATH", movePath
     if len(movePath) == 1: # if there is no possible move generated from AStar
-        possibleMoves = graph.neighbors(start)
-        WeightList = []
-        for possibleMove in possibleMoves:
-            WeightList.append((bfsGetWeight(graph, possibleMove), possibleMove))
-        move = min(WeightList, key = lambda t: t[1])
+        move = bfsGetSafeMove(start, graph)
         movePath.append(move[1])
-
+        print ("SAFE MOVE")
+    else:
+        print ("FOOD MOVE")
     return movePath
+
+
+# return (x,y) with min bfs value
+def bfsGetSafeMove(start, graph):
+    possibleMoves = graph.neighbors(start)
+    WeightList = []
+    for possibleMove in possibleMoves:
+        WeightList.append((bfsGetWeight(graph, possibleMove), possibleMove))
+    move = min(WeightList, key = lambda t: t[1])
+    return move[1]
 
 def bfsGetWeight(graph, start):
     MAX_INSTANCE = 40
@@ -83,15 +89,47 @@ def bfsGetWeight(graph, start):
         grid = q.get()
         instance += 1
         totalWeight += graph.weights.get(grid, 0)
-        for node in graph.neighbors(start):
+        for node in graph.neighbors(grid):
             if node not in visited:
                 visited.add(node)
+                q.put(node)
     return totalWeight
+
+
+# Pass in the next move, return if there is a guaranteed dead end after MAX_INSTANCE bfs entries
+def bfsGetPossibleMove(graph, head):
+    MAX_INSTANCE = 40
+    visitedInstance = 0 # number of instances we are going to look
+    q = Queue.Queue()
+    visited = set(head)
+    while not q.empty() and visitedInstance < MAX_INSTANCE:
+        grid = q.get() # pop the top thing
+        for neighbour in graph.neighbors(grid): # get the neighbors
+            if neighbour not in visited:
+                visited.add(neighbour)
+                q.put(neighbour)
+            else:
+                for possibleWall in grap.neighbors(neighbour):
+                    possibleWallObject = graph.weights.get(possibleWall, 0) # get possible wall
+                    if possibleWallObject != 0: # if we found a wall
+                        distanceFromStart = heuristic(possibleWall, head) # get # of moves to get to neighbour 
+                        if possibleWallObject[1] < distanceFromStart: # if by the time get there the wall is gone
+                            visited.add(possibleWall)
+                            q.put(possibleWall)
+        visitedInstance += 1
+    if visitedInstance < MAX_INSTANCE:
+        return False
+    return True
+
+# Do heatMap in enemy's head and see if they have down side
+def bfsEnemy(graph, head):
+    pass
+
 
 # walls is ((x,y), weight)
 def findHeatMap(head, walls, width, height):
     num = 17
-    threatDepthConstant = 5
+    threatDepthConstant = 3
     beta = 2 # standard coefficient for wall
     theta = 1.5 # coefficient for duration
     alpha = None
