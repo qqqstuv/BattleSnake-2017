@@ -1,4 +1,4 @@
-import collections, heapq, Queue
+import collections, heapq, Queue, math
 
 
 class SimpleGraph:
@@ -35,15 +35,8 @@ def a_star_search(graph, start, goal):
     cost_so_far = {}
     came_from[start] = None
     cost_so_far[start] = 0
-    
-    # graph.weights = update(start, graph.walls) # Update based on where the head is
 
-    # possibleMoves = graph.neighbors(id)
-    # if possibleMoves.length == 2:
-    #     WeightList = []
-    #     for possibleMove in possibleMoves:
-    #         WeightList.append(bfsGetWeight(graph, possibleMove), possibleMove ) )
-
+    graph.weights = findHeatMap(start, graph.walls, graph.width, graph.height) # Update based on where the head is
     while not frontier.empty():
         current = frontier.get()
         
@@ -92,21 +85,13 @@ def bfsGetWeight(graph, start):
                 visited.add(node)
     return totalWeight
 
-def findHeatMap(head, walls, numSnakes, width, height):
-    if numSnakes == 1:
-        num = 21
-    elif numSnakes == 2:
-        num = 21
-    elif numSnakes == 3:
-        num = 13
-    else:
-        num = 7
-
+# walls is ((x,y), weight)
+def findHeatMap(head, walls, width, height):
+    num = 5
+    threatDepthConstant = 3
     x_Size = assignStartEnd(head, num, width)
     y_Size = assignStartEnd(head, num, height)
     heatMap = {}
-    threatDepthConstant = 3
-
     for wall in walls:
         xCoff = 1
         yCoff = 1
@@ -114,13 +99,12 @@ def findHeatMap(head, walls, numSnakes, width, height):
             continue
         for x in range(wall[0][0]-threatDepthConstant, wall[0][0] + threatDepthConstant):
             xCoff = xCoff + 1
-            if(not(x<x_Size[0] or x>x_Size[1])):
+            if not ( x < x_Size[0] or x > x_Size[1] ):
                 for y in range(wall[0][1]-threatDepthConstant, wall[0][1] + threatDepthConstant):
                     yCoff = yCoff + 1
-                    if(not(y<y_Size[0] or y>y_Size[1])):
+                    if not ( y < y_Size[0] or y > y_Size[1] ):
                         weight = heatMap.get((x,y), 0)
-                        heatMap[(x,y)] = weight + wall[1]/((xCoff**2 + yCoff**2)**(1/2.0))
-
+                        heatMap[(x,y)] = weight + wall[1]/(math.sqrt(xCoff**2 + yCoff**2))
     return heatMap
 
 def assignStartEnd(head, num, maxDistance):
