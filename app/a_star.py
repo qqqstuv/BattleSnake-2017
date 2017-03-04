@@ -37,6 +37,7 @@ def a_star_search(graph, start, goal):
     cost_so_far[start] = 0
 
     graph.weights = findHeatMap(start, graph.walls, graph.width, graph.height) # Update based on where the head is
+    print "DEBUG GRAPH WEIGHTS:", graph.weights
     while not frontier.empty():
         current = frontier.get()
         
@@ -60,7 +61,7 @@ def a_star_search(graph, start, goal):
     movePath.reverse()
     movePath.append(goal) # add it so that the snake doesn't get confused at the last one it eats
 
-    print "DEBUG: MOVEPATH", movePath
+    print "DEBUG MOVEPATH", movePath
     # if len(movePath) == 1: # if there is no possible move generated from AStar
     #     possibleMoves = graph.neighbors(start)
     #     if len(possibleMoves) == 2:
