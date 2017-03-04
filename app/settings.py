@@ -11,14 +11,12 @@ def initializeMap(w, h):
 	width = w
 	height = h
 	Map = GridWithWeights(width, height)
-	print Map
 	# diagram4 = GridWithWeights(10, 10)
 	# diagram4.walls = [(1, 7), (1, 8), (2, 7), (2, 8), (3, 7), (3, 8)]
 	print "HEIGHT is ", height # need this line because without this resetMap wouldnt recognize height/width
 
 def getMap(): # not sure if should approach Python with this OOP
 	global Map
-	print Map
 	return Map
 
 #return if the given coord is bounded on the map
