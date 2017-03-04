@@ -68,12 +68,9 @@ def findEnemy(head, otherheads, graph):
 		updateHeatMap(aHead, graph)
 		# add possible route through customized bfs on the head
 		came_from, cost_so_far = dijkstra.dijkstra_search(graph, aHead)
-		for key in sorted(cost_so_far.iterkeys()):
-
-
-
-
-		return neighbors[0] # return the (x,y) we should go for
+		for key in sorted(cost_so_far.iterkeys()): # loop through lowest to highest key
+			if a_star.heuristic(key, head) < a_star.heuristic(key, aHead)
+				return key # return the (x,y) we should go for
 	return None
 	# if everything null do bfs on own snake
 

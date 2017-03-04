@@ -127,95 +127,81 @@ def bfsEnemy(graph, head):
 
 
 # walls is ((x,y), weight)
-def findHeatMap(head, walls, width, height):
-    num = 17
-    threatDepthConstant = 3
-    beta = 2 # standard coefficient for wall
+def findHeatMap(head, headList, walls, width, height):
+    num = 15 #has to be odd
+    threatDepthConstant = 3 #has to be odd divided by 2
+    borderWeight = 1 #borderWeight
+    beta = 1 # standard coefficient for border
     theta = 1.5 # coefficient for duration
+    defaultHeadWeight = theta*100 #snakeHeadWeight multiplier
     alpha = None
+    for i in headList:
+        walls.remove(i)
+        walls.append((i[0],defaultHeadWeight))
+    walls = addBorders(walls, width, height, borderWeight) #adds the borders to the list of walls
     x_Size = assignStartEnd(head, num, width)
     y_Size = assignStartEnd(head, num, height)
     heatMap = {}
     for wall in walls:
-        xCoff = -threatDepthConstant
-        yCoff = -threatDepthConstant
-        if wall[0][0] < x_Size[0] or wall[0][0] > x_Size[1] or wall[0][1] < y_Size[0] or wall[0][1] > y_Size[1]:
-            continue
-        for x in range(wall[0][0]-threatDepthConstant, wall[0][0] + threatDepthConstant):
-           if not(x < x_Size[0] or x >= x_Size[1]):
-                yCoff = -threatDepthConstant
-                xCoff = xCoff + 1
-                for y in range(wall[0][1]-threatDepthConstant, wall[0][1] + threatDepthConstant):
-                    if not(y < y_Size[0] or y >= y_Size[1]):
-                        yCoff = yCoff + 1
-                        weight = heatMap.get((x,y), 0)
-                        distanceLoad = math.sqrt(xCoff**2+yCoff**2)
-                        if distanceLoad == 0:
-                            distanceLoad = 1
-                        # heatMap[(x,y)] = weight + wall[1]/distanceLoad
-                        durationCoef = min(0, (wall[1] - heuristic((x,y), head))) #small means no harm, large means harm
-                        if durationCoef == 0:
-                            thetaCoefficient = 0
-                        else:
-                            thetaCoefficient = theta / durationCoef
-                        heatMap[(x,y)] = weight + (beta - thetaCoefficient) / distanceLoad
-		if x_Size[0] == 0:
-			for down in range(y_Size[0],y_Size[1]):
-				for across in range(threatDepthConstant):
-					if heatMap.has_key((across,down)):
-						distanceLoadW = math.sqrt(across**2+down**2)
-						if distanceLoadW == 0:
-							distanceLoadW = 1
-							
-						heatMap[(across,down)] = heatMap[(across,down)] + (beta / distanceLoadW)
-				
-		if x_Size[1] == width:
-			for down in range(y_Size[0],y_Size[1]):
-				for across in range(width - threatDepthConstant, width):
-					if heatMap.has_key((across,down)):
-						distanceLoadW = math.sqrt(across**2+down**2)
-						if distanceLoadW == 0:
-							distanceLoadW = 1
-							
-						heatMap[(across,down)] = heatMap[(across,down)] + (beta / distanceLoadW)
-			
-		if y_Size[1] == height:
-			for across in range(x_Size[0],x_Size[1]):
-				for up in range(height - threatDepthConstant, height):
-					if heatMap.has_key((across,up)):
-						distanceLoadW = math.sqrt(across**2+up**2)
-						if distanceLoadW == 0:
-							distanceLoadW = 1
-							
-						heatMap[(across,up)] = heatMap[(across,up)] + (beta / distanceLoadW)
-			
-		if y_Size[0] == 0:
-			for across in range(x_Size[0],x_Size[1]):
-				for down in range(threatDepthConstant):
-					if heatMap.has_key((across,down)):
-						distanceLoadW = math.sqrt(across**2+down**2)
-						if distanceLoadW == 0:
-							distanceLoadW = 1
-							
-						heatMap[(across,down)] = heatMap[(across,down)] + (beta / distanceLoadW)
-			
+        points = pointsAroundCoord(wall, threatDepthConstant, x_Size, y_Size) #returns a list of points of the form ((x,y),weight)
+        for point in points:
+            if heatMap.has_key(point):
+                heatMap[point] = heatMap[point] + points[point]
+            else:
+                heatMap[point] = points[point]
+        
+
     return heatMap
+    
+def pointsAroundCoord(wall, num, x_Size, y_Size):
+    points = {}
+    point = wall[0]
+    startLeft = point[0] - num/2
+    endLeft = point[0] + num/2
+    startTop = point[1] - num/2
+    endTop = point[1] + num/2
+    for i in range(startLeft, endLeft+1):
+        for j in range(startTop, endTop+1):
+            if(i< x_Size[0] or j< y_Size[0] or (i==point[0] and j == point[1])):
+                continue
+            if( i> x_Size[1] or j > y_Size[1]):
+                continue
+            if points.has_key((i,j)):
+                points[(i,j)] = points[(i,j)] + wall[1]
+            else:
+                points[(i,j)] = wall[1]
+    
+    return points
+    
+def addBorders(walls, width, height, borderWeight):
+    for i in range(-1, width+1): #x = -1 to max, y = max
+        walls.append(((i,-1),borderWeight))
+    for j in range(-1, width+1):  #x = -1 to max, y = -1
+        walls.append(((j,height),borderWeight))
+    for k in range(0, height): #y = 0 to height-1, since x got it, and x = -1
+        walls.append(((-1, k), borderWeight))
+    for l in range(0, height):
+        walls.append(((width,l), borderWeight)) #y = 0 to height-1, and x = width
+    
+    return walls
 
 def assignStartEnd(head, num, maxDistance):
     end = head[0]+num/2
     start = head[0]-num/2
-    full = False #if end and start have to be resized, it sets them to the maxiumums
+    full = False #if end and start have to be resized, it sets them to the maximums
     if start < 0:#if start is negative
         addon = abs(start) #shaves off the negative
         start = 0 #sets it to the minimum
         end = end + addon #adds to the end of x_end
         full = True #flag
-    elif end > maxDistance: #if end is too big
+    if end > maxDistance: #if end is too big
         addon = end - maxDistance #snags the extra bit
         start = start + addon #adds to start
         end = maxDistance #set to maximum
-        full = True #flag
-    elif full: #sets both to maximums
+    else:
+        full = False
+        
+    if full: #sets both to maximums
         start = 0
-        end = maxDistance  
-    return (start, end)  
+        end = maxDistance
+    return (start, end)
