@@ -27,7 +27,7 @@ def handler(id, snakeCoords, food):
 	for xy in food:
 		graph.food.append( (xy[0],xy[1]) )
 	# print graph
-	print "HEAD: ", head
+	# print "HEAD: ", head
 	FOOD_SEARCH_THRESHOLD = max(50, 90 - ourSnakeLength * 1) # the longer the less food threshold
 	final = ""
 
@@ -37,10 +37,11 @@ def handler(id, snakeCoords, food):
 			final = killSnakeMove(head, otherheads, graph)
 		else: # eat more
 			final = getFoodMove(head, food, otherheads)
-	if foodLevel < FOOD_SEARCH_THRESHOLD: # if we are hungy
-		final = getFoodMove(head, food, otherheads)
-	else: # kill snakes
-		final = killSnakeMove(head, otherheads, graph)
+	else: # there are 2 other snakes or less
+		if foodLevel < FOOD_SEARCH_THRESHOLD: # if we are hungy
+			final = getFoodMove(head, food, otherheads)
+		else: # kill snakes
+			final = killSnakeMove(head, otherheads, graph)
 	return final
 
 def killSnakeMove(head, otherheads, graph):
