@@ -121,6 +121,46 @@ def findHeatMap(head, walls, width, height):
                         else:
                             thetaCoefficient = theta / durationCoef
                         heatMap[(x,y)] = weight + (beta - thetaCoefficient) / distanceLoad
+		if x_Size[0] == 0:
+			for down in range(y_Size[0],y_Size[1]):
+				for across in range(threatDepthConstant):
+					if heatMap.has_key((across,down)):
+						distanceLoadW = math.sqrt(across**2+down**2)
+						if distanceLoadW == 0:
+							distanceLoadW = 1
+							
+						heatMap[(across,down)] = heatMap[(across,down)] + (beta / distanceLoadW)
+				
+		if x_Size[1] == width:
+			for down in range(y_Size[0],y_Size[1]):
+				for across in range(width - threatDepthConstant, width):
+					if heatMap.has_key((across,down)):
+						distanceLoadW = math.sqrt(across**2+down**2)
+						if distanceLoadW == 0:
+							distanceLoadW = 1
+							
+						heatMap[(across,down)] = heatMap[(across,down)] + (beta / distanceLoadW)
+			
+		if y_Size[1] == height:
+			for across in range(x_Size[0],x_Size[1]):
+				for up in range(height - threatDepthConstant, height):
+					if heatMap.has_key((across,up)):
+						distanceLoadW = math.sqrt(across**2+up**2)
+						if distanceLoadW == 0:
+							distanceLoadW = 1
+							
+						heatMap[(across,up)] = heatMap[(across,up)] + (beta / distanceLoadW)
+			
+		if y_Size[0] == 0:
+			for across in range(x_Size[0],x_Size[1]):
+				for down in range(threatDepthConstant):
+					if heatMap.has_key((across,down)):
+						distanceLoadW = math.sqrt(across**2+down**2)
+						if distanceLoadW == 0:
+							distanceLoadW = 1
+							
+						heatMap[(across,down)] = heatMap[(across,down)] + (beta / distanceLoadW)
+			
     return heatMap
 
 def assignStartEnd(head, num, maxDistance):
