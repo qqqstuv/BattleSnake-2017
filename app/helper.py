@@ -8,10 +8,10 @@ def handler(id, snakeCoords, food):
 	otherheads = []
 	for snake in snakeCoords:
 		coordinates = snake.get('coords')
-		for xy in coordinates:
+		for index, xy in enumerate(coordinates):
 			# print settings.getMap().walls
 			# print ([xy[0],xy[1]], 0)
-			settings.getMap().walls.append( ((xy[0],xy[1]), 0) ) # tuple of (coord, duration) default 0
+			settings.getMap().walls.append(makeWall(xy, index, length)) # tuple of (coord, duration) default 0
 		if snake.get('id') == id:
 			head = snake.get('coords')[0]
 		else:
@@ -29,6 +29,9 @@ def handler(id, snakeCoords, food):
 	final = directionToPoint(head, movePath[1]) # index 1 is because 0 is our goal
 	print "FINAL DECISION: " + final
 	return final
+
+def makeWall(xy, index, length):
+	return ((xy[0],xy[1]), length - index)
 
 def directionToPoint(start, goal):
 	if(start[0] == goal[0] - 1):
