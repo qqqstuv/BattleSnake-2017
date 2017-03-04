@@ -61,7 +61,7 @@ def a_star_search(graph, start, goal):
         temp = came_from.get(temp)
     movePath.reverse()
     movePath.append(goal) # add it so that the snake doesn't get confused at the last one it eats
-
+    
     # print "DEBUG MOVEPATH", movePath
     if len(movePath) == 1: # if there is no possible move generated from AStar
         move = bfsGetSafeMove(start, graph)

@@ -8,6 +8,7 @@ def handler(id, snakeCoords, food):
 	head = None # [x,y]
 	foodLevel = 0
 	otherheads = []
+	ourSnakeLength = 0
 	for snake in snakeCoords:
 		coordinates = snake.get('coords')
 		length = len(coordinates)
@@ -18,13 +19,14 @@ def handler(id, snakeCoords, food):
 		if snake.get('id') == id: # Our snake
 			head = snake.get('coords')[0]
 			foodLevel = snake.get('health_points')
+			ourSnakeLength = length
 		else:
 			otherheads.append(snake.get('coords')[0])
 	for xy in food:
 		graph.food.append( (xy[0],xy[1]) )
 	# print graph
 	print "HEAD: ", head
-	FOOD_SEARCH_THRESHOLD = 60
+	FOOD_SEARCH_THRESHOLD = 60 + ourSnakeLength * 0.5
 	final = ""
 
 	# MOVE LOGIC
