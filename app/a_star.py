@@ -115,7 +115,8 @@ def findHeatMap(head, walls, width, height):
                         if distanceLoad == 0:
                             distanceLoad = 1
                         # heatMap[(x,y)] = weight + wall[1]/distanceLoad
-                        heatMap[(x,y)] = weight + (beta + theta * (wall[1] - heuristic((x,y), head))) / distanceLoad
+                        durationCoef = min(0, (wall[1] - heuristic((x,y), head)))
+                        heatMap[(x,y)] = weight + (beta + theta * durationCoef) / distanceLoad
     return heatMap
 
 def assignStartEnd(head, num, maxDistance):
