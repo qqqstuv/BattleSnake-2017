@@ -5,6 +5,7 @@ def handler(id, snakeCoords, food):
 	settings.getMap().walls = [] # reset the map's walls to be 0
 	settings.getMap().weights = {}
 	head = None # [x,y]
+	foodLevel = 0
 	otherheads = []
 	for snake in snakeCoords:
 		coordinates = snake.get('coords')
@@ -13,8 +14,9 @@ def handler(id, snakeCoords, food):
 			# print settings.getMap().walls
 			# print ([xy[0],xy[1]], 0)
 			settings.getMap().walls.append(makeWall(xy, index, length)) # tuple of (coord, duration) default 0
-		if snake.get('id') == id:
+		if snake.get('id') == id: # Our snake
 			head = snake.get('coords')[0]
+			foodLevel = snake.get('health_points')
 		else:
 			otherheads.append(snake.get('coords')[0])
 	for xy in food:
@@ -22,14 +24,20 @@ def handler(id, snakeCoords, food):
 	# print settings.getMap()
 	print "HEAD: ", head
 	# possibleAround(head, directions)
+	FOOD_SEARCH_THRESHOLD = 60
+	final = ""
 
-	toFoodObject = findFood(head, food, otherheads) # (d from head to food, xy)
-	print "FOOD OBJECT: ", toFoodObject
-	movePath = applyAStar(head, toFoodObject[1])
-	print "MOVEPATH: ", movePath
-	final = directionToPoint(head, movePath[1]) # index 1 is because 0 is our goal
-	print "FINAL DECISION: " + final
+	if foodLevel < FOOD_SEARCH_THRESHOLD:
+		toFoodObject = findFood(head, food, otherheads) # (d from head to food, xy)
+		print "FOOD OBJECT: ", toFoodObject
+		movePath = applyAStar(head, toFoodObject[1])
+		print "MOVEPATH: ", movePath
+		final = directionToPoint(head, movePath[1]) # index 1 is because 0 is our goal
+		print "FINAL DECISION: " + final
+	else: # kill snakes
+		final = findEnemy(head, otherheads)		
 	return final
+	
 
 def makeWall(xy, index, length):
 	return ((xy[0],xy[1]), length - index)
@@ -87,6 +95,8 @@ def applyAStar(head, foodCoord):
 	movePath =  a_star.a_star_search(settings.getMap(), tupleHead, tupleFood)
 	return movePath
 
+def findEnemy(head, otherheads):
+	
 
 
 

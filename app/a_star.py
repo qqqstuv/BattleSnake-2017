@@ -83,10 +83,42 @@ def bfsGetWeight(graph, start):
         grid = q.get()
         instance += 1
         totalWeight += graph.weights.get(grid, 0)
-        for node in graph.neighbors(start):
+        for node in graph.neighbors(grid):
             if node not in visited:
                 visited.add(node)
+                q.put(node)
     return totalWeight
+
+
+# Pass in the next move
+def bfsGetPossible(graph, start):
+    MAX_INSTANCE = 40
+    visitedInstance = 0 # number of instances we are going to look
+    q = Queue.Queue()
+    visited = set(start)
+    while not q.empty() and visitedInstance < MAX_INSTANCE:
+        grid = q.get() #pop the top thing
+        for neighbour in graph.neighbors(grid): # get the neighbors
+            if neighbour not in visited:
+                visited.add(neighbour)
+                q.put(neighbour)
+            else:
+                for possibleWall in grap.neighbors(neighbour):
+                    possibleWallObject = graph.weights.get(possibleWall, 0) # get possible wall
+                    if possibleWallObject != 0: #if we found a wall
+                        distanceFromStart = heuristic(possibleWall, start) # get # of moves to get to neighbour 
+                       if possibleWallObject[1] < distanceFromStart: # if by the time get there the wall is gone
+                            visited.add(possibleWall)
+                            q.put(possibleWall)
+        visitedInstance += 1
+    if visitedInstance < MAX_INSTANCE:
+        return False
+    else return True
+
+# Do heatMap in enemy's head and see if they have down side
+def bfsEnemy(graph, head):
+    pass
+
 
 # walls is ((x,y), weight)
 def findHeatMap(head, walls, width, height):
