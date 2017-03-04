@@ -54,14 +54,14 @@ def possibleAround(head, directions):
 def distance(a,b):
 	return math.hypot(a[0] - b[0], a[1] - b[1])
 
-# Get the best food possible on the map
+# Get the best food possible on the map, foodObjects: list of (distance bw head, [x,y])
 def getBestFood(head, foodObjects, otherheads):
 	# Check distance b/w food and other snakes and get the most possible food
 	closest = foodObjects[0]
 	for index, foodObject in enumerate(foodObjects):
 		dToFood = sys.maxint
 		for i, aHead in enumerate(otherheads):
-			dToFood = min (distance(foodObject[0], aHead), dToFood)
+			dToFood = min (distance(foodObject[1], aHead), dToFood)
 		if dToFood > foodObject[0]:
 			closest = foodObject
 			return closest
