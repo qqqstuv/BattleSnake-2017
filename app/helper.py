@@ -55,7 +55,7 @@ def distance(a,b):
 	return math.hypot(a[0] - b[0], a[1] - b[1])
 
 # Get the best food possible on the map
-def getBestFood(head, food, otherheads):
+def getBestFood(head, foodObjects, otherheads):
 	# Check distance b/w food and other snakes and get the most possible food
 	closest = foodObjects[0]
 	for index, foodObject in enumerate(foodObjects):
