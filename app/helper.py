@@ -1,4 +1,4 @@
-import settings, numpy, a_star
+import settings, a_star
 
 # Return all possible moves in one block surrounding area
 def handler(id, snakeCoords, food):
