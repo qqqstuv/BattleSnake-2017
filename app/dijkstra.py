@@ -1,4 +1,4 @@
-impor heapq
+import heapq
 
 class GridWithWeights(SquareGrid):
     def __init__(self, width, height):
