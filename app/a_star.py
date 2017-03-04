@@ -38,6 +38,7 @@ def a_star_search(graph, start, goal):
 
     graph.weights = findHeatMap(start, graph.walls, graph.width, graph.height) # Update based on where the head is
     print "DEBUG GRAPH WEIGHTS:", graph.weights
+    print "GRAPH WALLS", graph.walls
     while not frontier.empty():
         current = frontier.get()
         
