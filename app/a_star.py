@@ -90,8 +90,8 @@ def bfsGetWeight(graph, start):
 
 # walls is ((x,y), weight)
 def findHeatMap(head, walls, width, height):
-    num = 15
-    threatDepthConstant = 7
+    num = 17
+    threatDepthConstant = 5
     x_Size = assignStartEnd(head, num, width)
     y_Size = assignStartEnd(head, num, height)
     heatMap = {}
