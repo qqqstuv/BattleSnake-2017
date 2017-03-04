@@ -1,26 +1,39 @@
-import settings, numpy
+import settings, numpy, a_star
 
 # Return all possible moves in one block surrounding area
 def handler(id, snakeCoords, food):
-	directions = {'0': 'right', '1': 'up', '2': 'left', '3': 'down'}
+	directions = ['right',  'up', 'left', 'down']
 	settings.resetMap() # reset the map to be 0
 	head = None
 	otherheads = []
 	for snake in snakeCoords:
 		coordinates = snake.get('coords')
 		for xy in coordinates:
-			settings.getMap()[xy[0]][xy[1]] = 1
+			settings.getMap().walls.append([xy[0]][xy[1]])
 		if snake.get('id') == id:
 			head = snake.get('coords')[0]
 		else:
 			otherheads.append(snake.get('coords')[0])
 	for xy in food:
-		settings.getMap()[xy[0]][xy[1]] = 2
+		settings.getMap().food.append([xy[0]][xy[1]])
 	# print settings.getMap()
 	print head
-	possibleAround(head, directions)
-	print directions
-	return directions
+	# possibleAround(head, directions)
+
+	toFoodObject = findFood(head, food, otherheads) # (d from head to food, xy)
+	movePath = applyAStar(head, toFoodObject[1])
+
+	return directionToPoint(head, movePath[0])
+
+def directionToPoint(start, goal):
+	if(start[0] == goal[0] + 1):
+		return 'right'
+	if(start[0] == goal[0] - 1):
+		return 'left'
+	if(start[1] == goal[1] + 1):
+		return 'up'
+	if(start[1] == goal[1] - 1):
+		return 'down'
 
 # Check four possible moves of the head
 def possibleAround(head, directions):
@@ -59,8 +72,18 @@ def findFood(head, food, otherheads):
 		foodObjects.append((distance(xy, head), xy))
 	foodObjects.sort(key=lambda tup: tup[0])
 	bestFoodObject = getBestFood(head, foodObjects, otherheads)
-	
+	return bestFoodObject
 
+def applyAStar(head, foodCoord):
+	came_from, cost_so_far = a_star.a_star_search(settings.getMap(), head, foodCoord)
+	goal = tuple(foodCoord)
+	temp = came_from.get(goal)
+	movePath = []
+	while temp != None:
+		movePath.append(temp)
+		temp = came_from.get(temp)
+	movePath.reverse()
+	return movePath
 
 
 

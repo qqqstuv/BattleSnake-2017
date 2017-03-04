@@ -1,4 +1,4 @@
-import collections, breadth_first_search, djikstra
+import collections
 
 
 class SimpleGraph:
@@ -13,11 +13,23 @@ def heuristic(a, b):
     (x2, y2) = b
     return abs(x1 - x2) + abs(y1 - y2)
 
+class PriorityQueue:
+    def __init__(self):
+        self.elements = []
+    
+    def empty(self):
+        return len(self.elements) == 0
+    
+    def put(self, item, priority):
+        heapq.heappush(self.elements, (priority, item))
+    
+    def get(self):
+        return heapq.heappop(self.elements)[1]
 
 
 # graph is a GridWithWeights, a child of SquareGrid
 def a_star_search(graph, start, goal):
-    frontier = djikstra.PriorityQueue()
+    frontier = PriorityQueue()
     frontier.put(start, 0)
     came_from = {}
     cost_so_far = {}

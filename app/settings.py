@@ -10,7 +10,9 @@ def initializeMap(w, h):
 	global width
 	width = w
 	height = h
-	Map = [[y for y in range(h)] for x in range(w)]
+	Map = GridWithWeights(width, height)
+	# diagram4 = GridWithWeights(10, 10)
+	# diagram4.walls = [(1, 7), (1, 8), (2, 7), (2, 8), (3, 7), (3, 8)]
 	resetMap()
 	print "HEIGHT is ", height # need this line because without this resetMap wouldnt recognize height/width
 
@@ -19,9 +21,7 @@ def getMap(): # not sure if should approach Python with this OOP
 	return Map
 
 def resetMap():
-	for x in range(height):
-		for y in range(width):
-			Map[x][y] = 0
+	Map.walls = []
 
 #return if the given coord is bounded on the map
 def isOutOfBound(coord):
@@ -29,7 +29,36 @@ def isOutOfBound(coord):
 
 #return true if the given coord overlaps with an entitiy on the map
 def isOverlap(coord):
-	# return (Map[coord[0]] and Map[coord[0]][coord[1]])
 	return (Map[coord[0]][coord[1]] == 1)
 def isCollided(coord):
 	return isOutOfBound(coord) or isOverlap(coord)
+
+class SquareGrid:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+        self.walls = []
+        self.food = []
+    
+    def in_bounds(self, id):
+        (x, y) = id
+        return 0 <= x < self.width and 0 <= y < self.height
+    
+    def passable(self, id):
+        return id not in self.walls
+    
+    def neighbors(self, id):
+        (x, y) = id
+        results = [(x+1, y), (x, y-1), (x-1, y), (x, y+1)]
+        if (x + y) % 2 == 0: results.reverse() # aesthetics
+        results = filter(self.in_bounds, results)
+        results = filter(self.passable, results)
+        return results
+
+class GridWithWeights(SquareGrid):
+    def __init__(self, width, height):
+        super().__init__(width, height)
+        self.weights = {}
+    
+    def cost(self, from_node, to_node):
+        return self.weights.get(to_node, 1)
