@@ -26,7 +26,7 @@ def handler(id, snakeCoords, food):
 		graph.food.append( (xy[0],xy[1]) )
 	# print graph
 	print "HEAD: ", head
-	FOOD_SEARCH_THRESHOLD = 60 + ourSnakeLength * 0.5
+	FOOD_SEARCH_THRESHOLD = 70 - ourSnakeLength * 0.5	
 	final = ""
 
 	# MOVE LOGIC
@@ -34,7 +34,7 @@ def handler(id, snakeCoords, food):
 		toFoodObject = findFood(head, food, otherheads) # (d from head to food, xy)
 		movePath = applyAStar(head, toFoodObject[1])
 		final = directionToPoint(head, movePath[1]) # index 1 is because 0 is our goal
-		print("FOOD ORIENTED - FOOD OBJECT: %s MOVEPATH: %s FINAL STRING DECISION: %" % (toFoodObject, movePath[1],final))
+		print("FOOD ORIENTED - FOOD OBJECT: %s MOVEPATH: %s FINAL STRING DECISION: %s" % (toFoodObject, movePath[1],final))
 	else: # kill snakes
 		move = findEnemy(head, otherheads, graph)
 		if move == None: # Could not find a snake to go to, then get Safest Move
