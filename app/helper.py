@@ -1,4 +1,4 @@
-import settings, a_star, math, sys
+import settings, a_star, math, sys, dijkstra, operator
 
 # Return all possible moves in one block surrounding area
 def handler(id, snakeCoords, food):
@@ -7,9 +7,10 @@ def handler(id, snakeCoords, food):
 	graph.weights = {}
 	head = None # [x,y]
 	foodLevel = 0
-	otherheads = []
 	ourSnakeLength = 0
+	otherheads = []
 	otherSnakeLengths = []
+	otherheadsAndHealth = []
 	for snake in snakeCoords:
 		coordinates = snake.get('coords')
 		length = len(coordinates)
@@ -23,12 +24,14 @@ def handler(id, snakeCoords, food):
 			ourSnakeLength = length
 		else:
 			otherSnakeLengths.append(length)
-			otherheads.append(snake.get('coords')[0])
+			otherheadsAndHealth.append(snake.get('coords')[0], snake.get('health_points'))
 	for xy in food:
 		graph.food.append( (xy[0],xy[1]) )
-	# print graph
-	# print "HEAD: ", head
-	FOOD_SEARCH_THRESHOLD = max(50, 90 - ourSnakeLength * 1) # the longer the less food threshold
+	#Sort snakehead list based on health
+	otherheadsAndHealth.sort(key=lambda headAndHealth: headAndHealth[1])
+	otherheads = [headAndHealth[0] for headAndHealth in otherheadsAndHealth]
+
+	FOOD_SEARCH_THRESHOLD = max(50, 95 - ourSnakeLength * 1) # the longer the less food threshold
 	final = ""
 
 	# MOVE LOGIC
@@ -38,29 +41,55 @@ def handler(id, snakeCoords, food):
 		else: # eat more
 			final = getFoodMove(head, food, otherheads)
 	else: # there are 2 other snakes or less
-		if foodLevel < FOOD_SEARCH_THRESHOLD: # if we are hungy
+		if foodLevel < FOOD_SEARCH_THRESHOLD: # if we are hungry
 			final = getFoodMove(head, food, otherheads)
 		else: # kill snakes
 			final = killSnakeMove(head, otherheads, graph)
 	return final
 
+# Find a snake and try to corner it
 def killSnakeMove(head, otherheads, graph):
 	move = findEnemy(head, otherheads, graph)
 	if move == None: # Could not find a snake to go to, then get Safest Move
-		graph.weights = a_star.findHeatMap(head, graph.walls, graph.width, graph.height)
+		updateHeatMap(head, graph)
 		move = a_star.bfsGetSafeMove(head, graph)
 		print ("SAFE MOVE")
 	else:
 		print ("KILL MOVE")
 	return directionToPoint(head, move)
 
+def updateHeatMap(head, graph):
+	graph.weights = a_star.findHeatMap(head, graph.walls, graph.width, graph.height)
+
+
+def findEnemy(head, otherheads, graph):
+	for aHead in otherheads: # loop through every snakes, snakes are sorted base on health
+		visited = [] # visited nodes 
+		updateHeatMap(aHead, graph)
+		# add possible route through customized bfs on the head
+		came_from, cost_so_far = dijkstra.dijkstra_search(graph, aHead)
+		for key in sorted(cost_so_far.iterkeys()):
+
+
+
+
+		return neighbors[0] # return the (x,y) we should go for
+	return None
+	# if everything null do bfs on own snake
+
 def getFoodMove(head, food, otherheads):
 	toFoodObject = findFood(head, food, otherheads) # (d from head to food, xy)
 	movePath = applyAStar(head, toFoodObject[1])
 	final = directionToPoint(head, movePath[1])
-	print("FOOD ORIENTED - FOOD OBJECT: %s MOVEPATH: %s FINAL STRING DECISION: %s" % (toFoodObject, movePath[1],final))
+	# print("FOOD ORIENTED - FOOD OBJECT: %s MOVEPATH: %s FINAL STRING DECISION: %s" % (toFoodObject, movePath[1],final))
 	return final # index 1 is because 0 is our goal
 
+def applyAStar(head, foodCoord):
+	tupleHead = tuple(head)
+	tupleFood = tuple(foodCoord)
+	updateHeatMap(head,settings.getMap())
+	movePath =  a_star.a_star_search(settings.getMap(), tupleHead, tupleFood)
+	return movePath
 
 def makeWall(xy, index, length):
 	return ((xy[0],xy[1]), length - index)
@@ -112,27 +141,9 @@ def findFood(head, food, otherheads):
 	bestFoodObject = getBestFood(head, foodObjects, otherheads)
 	return bestFoodObject
 
-def applyAStar(head, foodCoord):
-	tupleHead = tuple(head)
-	tupleFood = tuple(foodCoord)
-	movePath =  a_star.a_star_search(settings.getMap(), tupleHead, tupleFood)
-	return movePath
 
-def findEnemy(head, otherheads, graph):
-	for aHead in otherheads: # loop through every snakes
-		neighbors = []
-		isPotential = False
-		for neighbor in graph.neighbors(aHead): # get possible Moves
-			if a_star.bfsGetPossibleMove(graph, neighbor):
-				isPotential = True
-			else:
-				neighbors.append(graph.neighbors(neighbor))
-		if isPotential == True:
-			# for neighbor in neighbors:
-			# 	a_star.findHeatMap(neighbor, graph.walls, graph.width, graph.height) # This is not efficient. SHould CHange this
-			return neighbors[0] # return the (x,y) we should go for
-	return None
-	# if everything null do bfs on own snake
+
+
 
 def second_largest(numbers):
     count = 0

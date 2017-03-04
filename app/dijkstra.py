@@ -1,6 +1,4 @@
-import heapq
-
-
+impor heapq
 
 class GridWithWeights(SquareGrid):
     def __init__(self, width, height):
@@ -10,20 +8,33 @@ class GridWithWeights(SquareGrid):
     def cost(self, from_node, to_node):
         return self.weights.get(to_node, 1)
 
-def dijkstra_search(graph, start, goal):
+class PriorityQueue:
+    def __init__(self):
+        self.elements = []
+    
+    def empty(self):
+        return len(self.elements) == 0
+    
+    def put(self, item, priority):
+        heapq.heappush(self.elements, (priority, item))
+    
+    def get(self):
+        return heapq.heappop(self.elements)[1]
+
+def dijkstra_search(graph, start):
     frontier = PriorityQueue()
     frontier.put(start, 0)
     came_from = {}
     cost_so_far = {}
     came_from[start] = None
     cost_so_far[start] = 0
-    
+    MAX_INSTANCE = 40
+    instance = 0 # number of instances we are going to look
     while not frontier.empty():
-        current = frontier.get()
-        
-        if current == goal:
+        instance ++
+        if instance == MAX_INSTANCE:
             break
-        
+        current = frontier.get()
         for next in graph.neighbors(current):
             new_cost = cost_so_far[current] + graph.cost(current, next)
             if next not in cost_so_far or new_cost < cost_so_far[next]:
@@ -31,7 +42,6 @@ def dijkstra_search(graph, start, goal):
                 priority = new_cost
                 frontier.put(next, priority)
                 came_from[next] = current
-    
     return came_from, cost_so_far
 
 def reconstruct_path(came_from, start, goal):

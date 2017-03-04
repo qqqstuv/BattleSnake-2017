@@ -35,8 +35,6 @@ def a_star_search(graph, start, goal):
     cost_so_far = {}
     came_from[start] = None
     cost_so_far[start] = 0
-
-    graph.weights = findHeatMap(start, graph.walls, graph.width, graph.height) # Update based on where the head is
     # print "DEBUG GRAPH WEIGHTS:", graph.weights
     # print "GRAPH WALLS", graph.walls
     while not frontier.empty():
@@ -61,7 +59,7 @@ def a_star_search(graph, start, goal):
         temp = came_from.get(temp)
     movePath.reverse()
     movePath.append(goal) # add it so that the snake doesn't get confused at the last one it eats
-    
+
     # print "DEBUG MOVEPATH", movePath
     if len(movePath) == 1: # if there is no possible move generated from AStar
         move = bfsGetSafeMove(start, graph)
@@ -99,13 +97,13 @@ def bfsGetWeight(graph, start):
 
 
 # Pass in the next move, return if there is a guaranteed dead end after MAX_INSTANCE bfs entries
-def bfsGetPossibleMove(graph, start):
+def bfsGetPossibleMove(graph, head):
     MAX_INSTANCE = 40
     visitedInstance = 0 # number of instances we are going to look
     q = Queue.Queue()
-    visited = set(start)
+    visited = set(head)
     while not q.empty() and visitedInstance < MAX_INSTANCE:
-        grid = q.get() #pop the top thing
+        grid = q.get() # pop the top thing
         for neighbour in graph.neighbors(grid): # get the neighbors
             if neighbour not in visited:
                 visited.add(neighbour)
@@ -113,8 +111,8 @@ def bfsGetPossibleMove(graph, start):
             else:
                 for possibleWall in grap.neighbors(neighbour):
                     possibleWallObject = graph.weights.get(possibleWall, 0) # get possible wall
-                    if possibleWallObject != 0: #if we found a wall
-                        distanceFromStart = heuristic(possibleWall, start) # get # of moves to get to neighbour 
+                    if possibleWallObject != 0: # if we found a wall
+                        distanceFromStart = heuristic(possibleWall, head) # get # of moves to get to neighbour 
                         if possibleWallObject[1] < distanceFromStart: # if by the time get there the wall is gone
                             visited.add(possibleWall)
                             q.put(possibleWall)
