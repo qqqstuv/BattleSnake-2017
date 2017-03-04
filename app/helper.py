@@ -9,6 +9,7 @@ def handler(id, snakeCoords, food):
 	foodLevel = 0
 	otherheads = []
 	ourSnakeLength = 0
+	otherSnakeLengths = []
 	for snake in snakeCoords:
 		coordinates = snake.get('coords')
 		length = len(coordinates)
@@ -21,32 +22,43 @@ def handler(id, snakeCoords, food):
 			foodLevel = snake.get('health_points')
 			ourSnakeLength = length
 		else:
+			otherSnakeLengths.append(length)
 			otherheads.append(snake.get('coords')[0])
 	for xy in food:
 		graph.food.append( (xy[0],xy[1]) )
 	# print graph
 	print "HEAD: ", head
-	FOOD_SEARCH_THRESHOLD = max(50, 90 - ourSnakeLength * 1)
+	FOOD_SEARCH_THRESHOLD = max(50, 90 - ourSnakeLength * 1) # the longer the less food threshold
 	final = ""
 
 	# MOVE LOGIC
-	if foodLevel < FOOD_SEARCH_THRESHOLD:
-		toFoodObject = findFood(head, food, otherheads) # (d from head to food, xy)
-		movePath = applyAStar(head, toFoodObject[1])
-		final = directionToPoint(head, movePath[1]) # index 1 is because 0 is our goal
-		print("FOOD ORIENTED - FOOD OBJECT: %s MOVEPATH: %s FINAL STRING DECISION: %s" % (toFoodObject, movePath[1],final))
+	if len(otherSnakeLengths) > 2: # if there are more than 2 other snakes
+		if ourSnakeLength > second_largest(otherSnakeLengths): # if our length is ok
+			final = killSnakeMove(head, otherheads, graph)
+		else: # eat more
+			final = getFoodMove(head, food, otherheads)
+	if foodLevel < FOOD_SEARCH_THRESHOLD: # if we are hungy
+		final = getFoodMove(head, food, otherheads)
 	else: # kill snakes
-		move = findEnemy(head, otherheads, graph)
-		if move == None: # Could not find a snake to go to, then get Safest Move
-			graph.weights = a_star.findHeatMap(head, graph.walls, graph.width, graph.height)
-			move = a_star.bfsGetSafeMove(head, graph)
-			print ("SAFE MOVE")
-		else:
-			print ("KILL MOVE")
-		final = directionToPoint(head, move)
-
+		final = killSnakeMove(head, otherheads, graph)
 	return final
-	
+
+def killSnakeMove(head, otherheads, graph):
+	move = findEnemy(head, otherheads, graph)
+	if move == None: # Could not find a snake to go to, then get Safest Move
+		graph.weights = a_star.findHeatMap(head, graph.walls, graph.width, graph.height)
+		move = a_star.bfsGetSafeMove(head, graph)
+		print ("SAFE MOVE")
+	else:
+		print ("KILL MOVE")
+	return directionToPoint(head, move)
+
+def getFoodMove(head, food, otherheads):
+	toFoodObject = findFood(head, food, otherheads) # (d from head to food, xy)
+	movePath = applyAStar(head, toFoodObject[1])
+	print("FOOD ORIENTED - FOOD OBJECT: %s MOVEPATH: %s FINAL STRING DECISION: %s" % (toFoodObject, movePath[1],final))
+	return directionToPoint(head, movePath[1]) # index 1 is because 0 is our goal
+
 
 def makeWall(xy, index, length):
 	return ((xy[0],xy[1]), length - index)
@@ -120,4 +132,14 @@ def findEnemy(head, otherheads, graph):
 	return None
 	# if everything null do bfs on own snake
 
-
+def second_largest(numbers):
+    count = 0
+    m1 = m2 = float('-inf')
+    for x in numbers:
+        count += 1
+        if x > m2:
+            if x >= m1:
+                m1, m2 = x, m1            
+            else:
+                m2 = x
+    return m2 if count >= 2 else None
