@@ -25,7 +25,7 @@ def handler(id, snakeCoords, food):
 	print "FOOD OBJECT: ", toFoodObject
 	movePath = applyAStar(head, toFoodObject[1])
 	print "MOVEPATH: ", movePath
-	final = directionToPoint(head, movePath[0])
+	final = directionToPoint(head, movePath[1]) # index 1 is because 0 is our goal
 	print "FINAL DECISION: " + final
 	return final
 
