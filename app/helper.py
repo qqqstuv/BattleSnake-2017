@@ -10,7 +10,7 @@ def handler(id, snakeCoords, food):
 		for xy in coordinates:
 			print settings.getMap().walls
 			print ([xy[0],xy[1]], 0)
-			settings.getMap().walls.append( ((xy[0],xy[1]), 0, 0) ) # tuple of (coord, weight, duration) default 0
+			settings.getMap().walls.append( ((xy[0],xy[1]), 0) ) # tuple of (coord, duration) default 0
 		if snake.get('id') == id:
 			head = snake.get('coords')[0]
 		else:
@@ -30,9 +30,9 @@ def handler(id, snakeCoords, food):
 	return final
 
 def directionToPoint(start, goal):
-	if(start[0] == goal[0] + 1):
-		return 'right'
 	if(start[0] == goal[0] - 1):
+		return 'right'
+	if(start[0] == goal[0] + 1):
 		return 'left'
 	if(start[1] == goal[1] + 1):
 		return 'up'
