@@ -31,7 +31,7 @@ def dijkstra_search(graph, start):
     MAX_INSTANCE = 40
     instance = 0 # number of instances we are going to look
     while not frontier.empty():
-        instance ++
+        instance +=1
         if instance == MAX_INSTANCE:
             break
         current = frontier.get()
