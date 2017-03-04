@@ -71,7 +71,7 @@ def findEnemy(head, otherheadsAndDuration, otherheads, graph):
 		# add possible route through customized bfs on the head
 		came_from, cost_so_far = dijkstra.dijkstra_search(graph, aHead)
 		for key in sorted(cost_so_far.iterkeys()): # loop through lowest to highest key
-			if a_star.heuristic(key, head) < a_star.heuristic(key, aHead)
+			if a_star.heuristic(key, head) < a_star.heuristic(key, aHead):
 				return key # return the (x,y) we should go for
 	return None
 	# if everything null do bfs on own snake
