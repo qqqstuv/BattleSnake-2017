@@ -13,7 +13,6 @@ def initializeMap(w, h):
 	Map = GridWithWeights(width, height)
 	# diagram4 = GridWithWeights(10, 10)
 	# diagram4.walls = [(1, 7), (1, 8), (2, 7), (2, 8), (3, 7), (3, 8)]
-	resetMap()
 	print "HEIGHT is ", height # need this line because without this resetMap wouldnt recognize height/width
 
 def getMap(): # not sure if should approach Python with this OOP
