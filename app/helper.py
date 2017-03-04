@@ -48,7 +48,7 @@ def possibleAround(head, directions):
 
 # Calculate distance between 2 points
 def distance(a,b):
-	return dist = math.hypot(a[0] - b[0], a[1] - b[1])
+	return math.hypot(a[0] - b[0], a[1] - b[1])
 
 # Get the best food possible on the map
 def getBestFood(head, food, otherheads):
