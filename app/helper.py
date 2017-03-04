@@ -16,7 +16,7 @@ def handler(id, snakeCoords, food):
 		else:
 			otherheads.append(snake.get('coords')[0])
 	for xy in food:
-		settings.getMap().food.append([xy[0]][xy[1]])
+		settings.getMap().food.append( (xy[0],xy[1]) )
 	# print settings.getMap()
 	print "HEAD: ", head
 	# possibleAround(head, directions)
