@@ -118,7 +118,7 @@ def bfsGetPossibleMove(graph, start):
         visitedInstance += 1
     if visitedInstance < MAX_INSTANCE:
         return False
-    else return True
+    return True
 
 # Do heatMap in enemy's head and see if they have down side
 def bfsEnemy(graph, head):
