@@ -8,8 +8,8 @@ def handler(id, snakeCoords, food):
 	for snake in snakeCoords:
 		coordinates = snake.get('coords')
 		for xy in coordinates:
-			print settings.getMap().walls
-			print ([xy[0],xy[1]], 0)
+			# print settings.getMap().walls
+			# print ([xy[0],xy[1]], 0)
 			settings.getMap().walls.append( ((xy[0],xy[1]), 0) ) # tuple of (coord, duration) default 0
 		if snake.get('id') == id:
 			head = snake.get('coords')[0]
@@ -86,6 +86,7 @@ def applyAStar(head, foodCoord):
 	while temp != None:
 		movePath.append(temp)
 		temp = came_from.get(temp)
+	movePath.append(tupleFood) # add it so that the snake doesn't get confused at the last one it eats
 	movePath.reverse()
 	return movePath
 
