@@ -79,15 +79,7 @@ def findFood(head, food, otherheads):
 def applyAStar(head, foodCoord):
 	tupleHead = tuple(head)
 	tupleFood = tuple(foodCoord)
-	came_from, cost_so_far = a_star.a_star_search(settings.getMap(), tupleHead, tupleFood)
-	goal = tuple(foodCoord)
-	temp = came_from.get(goal)
-	movePath = []
-	while temp != None:
-		movePath.append(temp)
-		temp = came_from.get(temp)
-	movePath.reverse()
-	movePath.append(tupleFood) # add it so that the snake doesn't get confused at the last one it eats
+	movePath =  a_star.a_star_search(settings.getMap(), tupleHead, tupleFood)
 	return movePath
 
 

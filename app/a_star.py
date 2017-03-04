@@ -44,7 +44,6 @@ def a_star_search(graph, start, goal):
     #     for possibleMove in possibleMoves:
     #         WeightList.append(bfsGetWeight(graph, possibleMove), possibleMove ) )
 
-
     while not frontier.empty():
         current = frontier.get()
         
@@ -59,7 +58,24 @@ def a_star_search(graph, start, goal):
                 frontier.put(next, priority)
                 came_from[next] = current # set the parent of the neighbour, which is the current node
     
-    return came_from, cost_so_far
+    # Get the movePath list
+    temp = came_from.get(start)
+    movePath = []
+    while temp != None:
+        movePath.append(temp)
+        temp = came_from.get(temp)
+    movePath.reverse()
+    movePath.append(goal) # add it so that the snake doesn't get confused at the last one it eats
+
+    if movePath.length == 1: # if there is no possible move generated from AStar
+        possibleMoves = graph.neighbors(start)
+        if possibleMoves.length == 2:
+            WeightList = []
+            for possibleMove in possibleMoves:
+                WeightList.append((bfsGetWeight(graph, possibleMove), possibleMove))
+            move = min(WeightList, key = lambda t: t[1])
+            movePath.append(move[1])
+    return movePath
 
 def bfsGetWeight(graph, start):
     MAX_INSTANCE = 20
