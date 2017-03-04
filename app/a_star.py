@@ -74,7 +74,7 @@ def a_star_search(graph, start, goal):
     return movePath
 
 def bfsGetWeight(graph, start):
-    MAX_INSTANCE = 25
+    MAX_INSTANCE = 40
     instance = 0 # number of instances we are going to look
     totalWeight = 0
     q = Queue.Queue()
