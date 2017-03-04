@@ -24,23 +24,23 @@ def handler(id, snakeCoords, food):
 		graph.food.append( (xy[0],xy[1]) )
 	# print graph
 	print "HEAD: ", head
-	# possibleAround(head, directions)
 	FOOD_SEARCH_THRESHOLD = 60
 	final = ""
 
+	# MOVE LOGIC
 	if foodLevel < FOOD_SEARCH_THRESHOLD:
 		toFoodObject = findFood(head, food, otherheads) # (d from head to food, xy)
-		print "FOOD OBJECT: ", toFoodObject
 		movePath = applyAStar(head, toFoodObject[1])
-		print "MOVEPATH: ", movePath
 		final = directionToPoint(head, movePath[1]) # index 1 is because 0 is our goal
-		print "FINAL STRING DECISION: " + final
+		print("FOOD ORIENTED - FOOD OBJECT: %s MOVEPATH: %s FINAL STRING DECISION: %" % (toFoodObject, movePath[1],final))
 	else: # kill snakes
 		move = findEnemy(head, otherheads, graph)
 		if move == None: # Could not find a snake to go to, then get Safest Move
 			graph.weights = a_star.findHeatMap(head, graph.walls, graph.width, graph.height)
 			move = a_star.bfsGetSafeMove(head, graph)
-		
+			print ("SAFE MOVE")
+		else:
+			print ("KILL MOVE")
 		final = directionToPoint(head, move)
 
 	return final
