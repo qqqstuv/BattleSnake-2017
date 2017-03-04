@@ -43,7 +43,7 @@ class SquareGrid(object):
     def passable(self, id): # self.walls contains tuple of ((x,y), weight)
         return id not in [item[0] for item in self.walls]
     
-    def neighbors(self, id):
+    def neighbors(self, id): # return possible neighbors around the point
         (x, y) = id
         results = [(x+1, y), (x, y-1), (x-1, y), (x, y+1)]
         if (x + y) % 2 == 0: results.reverse() # aesthetics
@@ -54,7 +54,7 @@ class SquareGrid(object):
 class GridWithWeights(SquareGrid):
     def __init__(self, width, height):
         super(GridWithWeights, self).__init__(width, height)
-        self.weights = {}
+        self.weights = {} # {(x,y), w} hold the weight of the free grid
     
     def cost(self, from_node, to_node):
         return self.weights.get(to_node, 1)

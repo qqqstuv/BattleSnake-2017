@@ -1,4 +1,4 @@
-import collections, heapq
+import collections, heapq, Queue
 
 
 class SimpleGraph:
@@ -36,6 +36,15 @@ def a_star_search(graph, start, goal):
     came_from[start] = None
     cost_so_far[start] = 0
     
+    # graph.weights = update(start, graph.walls) # Update based on where the head is
+
+    # possibleMoves = graph.neighbors(id)
+    # if possibleMoves.length == 2:
+    #     WeightList = []
+    #     for possibleMove in possibleMoves:
+    #         WeightList.append(bfsGetWeight(graph, possibleMove), possibleMove ) )
+
+
     while not frontier.empty():
         current = frontier.get()
         
@@ -51,3 +60,18 @@ def a_star_search(graph, start, goal):
                 came_from[next] = current # set the parent of the neighbour, which is the current node
     
     return came_from, cost_so_far
+
+def bfsGetWeight(graph, start):
+    MAX_INSTANCE = 20
+    instance = 0 # number of instances we are going to look
+    totalWeight = 0
+    q = Queue.Queue()
+    visited = set(start)
+    while not q.empty() and instance < MAX_INSTANCE:
+        grid = q.get()
+        instance += 1
+        totalWeight += graph.weights.get(grid, 0)
+        for node in graph.neighbors(start):
+            if node not in visited:
+                visited.add(node)
+    return totalWeight
