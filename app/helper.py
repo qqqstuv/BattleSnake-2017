@@ -2,9 +2,9 @@ import settings, a_star, math, sys
 
 # Return all possible moves in one block surrounding area
 def handler(id, snakeCoords, food):
-	theMap = settings.getMap()
-	theMap.walls = [] # reset the map's walls to be 0
-	theMap.weights = {}
+	graph = settings.getMap()
+	graph.walls = [] # reset the map's walls to be 0
+	graph.weights = {}
 	head = None # [x,y]
 	foodLevel = 0
 	otherheads = []
@@ -12,17 +12,17 @@ def handler(id, snakeCoords, food):
 		coordinates = snake.get('coords')
 		length = len(coordinates)
 		for index, xy in enumerate(coordinates):
-			# print theMap.walls
+			# print graph.walls
 			# print ([xy[0],xy[1]], 0)
-			theMap.walls.append(makeWall(xy, index, length)) # tuple of (coord, duration) default 0
+			graph.walls.append(makeWall(xy, index, length)) # tuple of (coord, duration) default 0
 		if snake.get('id') == id: # Our snake
 			head = snake.get('coords')[0]
 			foodLevel = snake.get('health_points')
 		else:
 			otherheads.append(snake.get('coords')[0])
 	for xy in food:
-		theMap.food.append( (xy[0],xy[1]) )
-	# print theMap
+		graph.food.append( (xy[0],xy[1]) )
+	# print graph
 	print "HEAD: ", head
 	# possibleAround(head, directions)
 	FOOD_SEARCH_THRESHOLD = 60
@@ -36,7 +36,7 @@ def handler(id, snakeCoords, food):
 		final = directionToPoint(head, movePath[1]) # index 1 is because 0 is our goal
 		print "FINAL STRING DECISION: " + final
 	else: # kill snakes
-		move = findEnemy(head, otherheads)
+		move = findEnemy(head, otherheads, graph)
 		if move == None: # Could not find a snake to go to
 			graph.weights = a_star.findHeatMap(start, graph.walls, graph.width, graph.height)
 			move = a_star.bfsGetSafeMove(start, graph)
