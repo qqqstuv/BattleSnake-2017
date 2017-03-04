@@ -92,26 +92,30 @@ def bfsGetWeight(graph, start):
 def findHeatMap(head, walls, width, height):
     num = 17
     threatDepthConstant = 5
+    beta = 2 # standard coefficient for wall
+    theta = 1.5 # coefficient for duration
+    alpha = None
     x_Size = assignStartEnd(head, num, width)
     y_Size = assignStartEnd(head, num, height)
     heatMap = {}
     for wall in walls:
-            xCoff = -threatDepthConstant
-            yCoff = -threatDepthConstant
-            if wall[0][0] < x_Size[0] or wall[0][0] > x_Size[1] or wall[0][1] < y_Size[0] or wall[0][1] > y_Size[1]:
-                continue
-            for x in range(wall[0][0]-threatDepthConstant, wall[0][0] + threatDepthConstant):
-               if not(x < x_Size[0] or x >= x_Size[1]):
-                    yCoff = -threatDepthConstant
-                    xCoff = xCoff + 1
-                    for y in range(wall[0][1]-threatDepthConstant, wall[0][1] + threatDepthConstant):
-                        if not(y < y_Size[0] or y >= y_Size[1]):
-                            yCoff = yCoff + 1
-                            weight = heatMap.get((x,y), 0)
-                            distanceLoad = math.sqrt(xCoff**2+yCoff**2)
-                            if distanceLoad == 0:
-                                distanceLoad = 1
-                            heatMap[(x,y)] = weight + wall[1]/distanceLoad
+        xCoff = -threatDepthConstant
+        yCoff = -threatDepthConstant
+        if wall[0][0] < x_Size[0] or wall[0][0] > x_Size[1] or wall[0][1] < y_Size[0] or wall[0][1] > y_Size[1]:
+            continue
+        for x in range(wall[0][0]-threatDepthConstant, wall[0][0] + threatDepthConstant):
+           if not(x < x_Size[0] or x >= x_Size[1]):
+                yCoff = -threatDepthConstant
+                xCoff = xCoff + 1
+                for y in range(wall[0][1]-threatDepthConstant, wall[0][1] + threatDepthConstant):
+                    if not(y < y_Size[0] or y >= y_Size[1]):
+                        yCoff = yCoff + 1
+                        weight = heatMap.get((x,y), 0)
+                        distanceLoad = math.sqrt(xCoff**2+yCoff**2)
+                        if distanceLoad == 0:
+                            distanceLoad = 1
+                        # heatMap[(x,y)] = weight + wall[1]/distanceLoad
+                        heatMap[(x,y)] = weight + (beta + theta * (wall[1] - heuristic((x,y), head))) / distanceLoad
     return heatMap
 
 def assignStartEnd(head, num, maxDistance):
