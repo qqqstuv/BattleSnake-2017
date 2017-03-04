@@ -2,7 +2,7 @@ import settings, a_star
 
 # Return all possible moves in one block surrounding area
 def handler(id, snakeCoords, food):
-	settings.resetMap() # reset the map to be 0
+	settings.getMap().walls = [] # reset the map's walls to be 0
 	head = None
 	otherheads = []
 	for snake in snakeCoords:

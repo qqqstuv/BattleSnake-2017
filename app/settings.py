@@ -20,10 +20,6 @@ def getMap(): # not sure if should approach Python with this OOP
 	global Map
 	return Map
 
-def resetMap():
-	global Map
-	Map.walls = []
-
 #return if the given coord is bounded on the map
 def isOutOfBound(coord):
 	return (coord[0] < 0 or coord[0] >= width or coord[1] < 0 or coord[1] >= height)
