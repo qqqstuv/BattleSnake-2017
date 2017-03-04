@@ -2,8 +2,9 @@ import settings, a_star, math, sys
 
 # Return all possible moves in one block surrounding area
 def handler(id, snakeCoords, food):
-	settings.getMap().walls = [] # reset the map's walls to be 0
-	settings.getMap().weights = {}
+	theMap = settings.getMap()
+	theMap.walls = [] # reset the map's walls to be 0
+	theMap.weights = {}
 	head = None # [x,y]
 	foodLevel = 0
 	otherheads = []
@@ -11,17 +12,17 @@ def handler(id, snakeCoords, food):
 		coordinates = snake.get('coords')
 		length = len(coordinates)
 		for index, xy in enumerate(coordinates):
-			# print settings.getMap().walls
+			# print theMap.walls
 			# print ([xy[0],xy[1]], 0)
-			settings.getMap().walls.append(makeWall(xy, index, length)) # tuple of (coord, duration) default 0
+			theMap.walls.append(makeWall(xy, index, length)) # tuple of (coord, duration) default 0
 		if snake.get('id') == id: # Our snake
 			head = snake.get('coords')[0]
 			foodLevel = snake.get('health_points')
 		else:
 			otherheads.append(snake.get('coords')[0])
 	for xy in food:
-		settings.getMap().food.append( (xy[0],xy[1]) )
-	# print settings.getMap()
+		theMap.food.append( (xy[0],xy[1]) )
+	# print theMap
 	print "HEAD: ", head
 	# possibleAround(head, directions)
 	FOOD_SEARCH_THRESHOLD = 60
@@ -33,9 +34,15 @@ def handler(id, snakeCoords, food):
 		movePath = applyAStar(head, toFoodObject[1])
 		print "MOVEPATH: ", movePath
 		final = directionToPoint(head, movePath[1]) # index 1 is because 0 is our goal
-		print "FINAL DECISION: " + final
+		print "FINAL STRING DECISION: " + final
 	else: # kill snakes
-		final = findEnemy(head, otherheads)		
+		move = findEnemy(head, otherheads)
+		if move = None: # Could not find a snake to go to
+			graph.weights = a_star.findHeatMap(start, graph.walls, graph.width, graph.height)
+			move = a_star.bfsGetSafeMove(start, graph)
+		
+		final = directionToPoint(head, move)
+		
 	return final
 	
 
@@ -95,8 +102,20 @@ def applyAStar(head, foodCoord):
 	movePath =  a_star.a_star_search(settings.getMap(), tupleHead, tupleFood)
 	return movePath
 
-def findEnemy(head, otherheads):
-	
-
+def findEnemy(head, otherheads, graph):
+	for aHead in otherheads: # loop through every snakes
+		neighbors = []
+		isPotential = False
+		for neighbor in graph.neighbors(aHead): # get possible Moves
+			if a_star.bfsGetPossibleMove(graph, neighbor):
+				isPotential = True
+			else:
+				neighbors.append(graph.neighbors(neighbor))
+		if isPotential = True:
+			# for neighbor in neighbors:
+			# 	a_star.findHeatMap(neighbor, graph.walls, graph.width, graph.height) # This is not efficient. SHould CHange this
+			return neighbors[0] # return the (x,y) we should go for
+	return None
+	# if everything null do bfs on own snake
 
 

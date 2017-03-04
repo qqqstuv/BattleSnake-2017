@@ -64,14 +64,19 @@ def a_star_search(graph, start, goal):
 
     print "DEBUG MOVEPATH", movePath
     if len(movePath) == 1: # if there is no possible move generated from AStar
-        possibleMoves = graph.neighbors(start)
-        WeightList = []
-        for possibleMove in possibleMoves:
-            WeightList.append((bfsGetWeight(graph, possibleMove), possibleMove))
-        move = min(WeightList, key = lambda t: t[1])
+        move = bfsGetSafeMove(start, graph)
         movePath.append(move[1])
-
     return movePath
+
+
+# return (x,y) with min bfs value
+def bfsGetSafeMove(start, graph):
+    possibleMoves = graph.neighbors(start)
+    WeightList = []
+    for possibleMove in possibleMoves:
+        WeightList.append((bfsGetWeight(graph, possibleMove), possibleMove))
+    move = min(WeightList, key = lambda t: t[1])
+    return move[1]
 
 def bfsGetWeight(graph, start):
     MAX_INSTANCE = 40
@@ -91,7 +96,7 @@ def bfsGetWeight(graph, start):
 
 
 # Pass in the next move
-def bfsGetPossible(graph, start):
+def bfsGetPossibleMove(graph, start):
     MAX_INSTANCE = 40
     visitedInstance = 0 # number of instances we are going to look
     q = Queue.Queue()
