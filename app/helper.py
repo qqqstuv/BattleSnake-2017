@@ -8,6 +8,7 @@ def handler(id, snakeCoords, food):
 	otherheads = []
 	for snake in snakeCoords:
 		coordinates = snake.get('coords')
+		length = len(coordinates)
 		for index, xy in enumerate(coordinates):
 			# print settings.getMap().walls
 			# print ([xy[0],xy[1]], 0)
