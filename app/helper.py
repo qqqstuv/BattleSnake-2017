@@ -26,7 +26,7 @@ def handler(id, snakeCoords, food):
 		graph.food.append( (xy[0],xy[1]) )
 	# print graph
 	print "HEAD: ", head
-	FOOD_SEARCH_THRESHOLD = 70 - ourSnakeLength * 0.5	
+	FOOD_SEARCH_THRESHOLD = max(50, 90 - ourSnakeLength * 1)
 	final = ""
 
 	# MOVE LOGIC
