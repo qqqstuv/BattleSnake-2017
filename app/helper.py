@@ -1,4 +1,4 @@
-import settings, a_star
+import settings, a_star, math
 
 # Return all possible moves in one block surrounding area
 def handler(id, snakeCoords, food):
@@ -10,7 +10,7 @@ def handler(id, snakeCoords, food):
 		for xy in coordinates:
 			print settings.getMap().walls
 			print ([xy[0],xy[1]], 0)
-			settings.getMap().walls.append( ([xy[0],xy[1]], 0) ) # tuple of (coord, weight) default 0
+			settings.getMap().walls.append( ((xy[0],xy[1]), 0) ) # tuple of (coord, weight) default 0
 		if snake.get('id') == id:
 			head = snake.get('coords')[0]
 		else:
