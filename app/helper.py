@@ -17,13 +17,16 @@ def handler(id, snakeCoords, food):
 	for xy in food:
 		settings.getMap().food.append([xy[0]][xy[1]])
 	# print settings.getMap()
-	print head
+	print "HEAD: ", head
 	# possibleAround(head, directions)
 
 	toFoodObject = findFood(head, food, otherheads) # (d from head to food, xy)
+	print "FOOD OBJECT: ", toFoodObject
 	movePath = applyAStar(head, toFoodObject[1])
-
-	return directionToPoint(head, movePath[0])
+	print "MOVEPATH: ", movePath
+	final = directionToPoint(head, movePath[0])
+	print "FINAL DECISION: " + final
+	return final
 
 def directionToPoint(start, goal):
 	if(start[0] == goal[0] + 1):
