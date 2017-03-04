@@ -21,6 +21,7 @@ def getMap(): # not sure if should approach Python with this OOP
 	return Map
 
 def resetMap():
+	global Map
 	Map.walls = []
 
 #return if the given coord is bounded on the map
