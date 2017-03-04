@@ -118,7 +118,7 @@ def findHeatMap(head, walls, width, height):
                         durationCoef = min(0, (wall[1] - heuristic((x,y), head))) #small means no harm, large means harm
                         if durationCoef == 0:
                             thetaCoefficient = 0
-                        else
+                        else:
                             thetaCoefficient = theta / durationCoef
                         heatMap[(x,y)] = weight + (beta - thetaCoefficient) / distanceLoad
     return heatMap
