@@ -91,7 +91,7 @@ def bfsGetWeight(graph, start):
 # walls is ((x,y), weight)
 def findHeatMap(head, walls, width, height):
     num = 17
-    threatDepthConstant = 5
+    threatDepthConstant = 3
     beta = 2 # standard coefficient for wall
     theta = 1.5 # coefficient for duration
     alpha = None
