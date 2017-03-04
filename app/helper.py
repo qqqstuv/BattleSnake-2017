@@ -3,14 +3,14 @@ import settings, a_star, math, sys
 # Return all possible moves in one block surrounding area
 def handler(id, snakeCoords, food):
 	settings.getMap().walls = [] # reset the map's walls to be 0
-	head = None
+	head = None # [x,y]
 	otherheads = []
 	for snake in snakeCoords:
 		coordinates = snake.get('coords')
 		for xy in coordinates:
 			print settings.getMap().walls
 			print ([xy[0],xy[1]], 0)
-			settings.getMap().walls.append( ((xy[0],xy[1]), 0) ) # tuple of (coord, weight) default 0
+			settings.getMap().walls.append( ((xy[0],xy[1]), 0, 0) ) # tuple of (coord, weight, duration) default 0
 		if snake.get('id') == id:
 			head = snake.get('coords')[0]
 		else:
@@ -77,7 +77,9 @@ def findFood(head, food, otherheads):
 	return bestFoodObject
 
 def applyAStar(head, foodCoord):
-	came_from, cost_so_far = a_star.a_star_search(settings.getMap(), head, foodCoord)
+	tupleHead = tuple(head)
+	tupleFood = tuple(foodCoord)
+	came_from, cost_so_far = a_star.a_star_search(settings.getMap(), tupleHead, tupleFood)
 	goal = tuple(foodCoord)
 	temp = came_from.get(goal)
 	movePath = []
