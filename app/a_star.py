@@ -95,7 +95,7 @@ def bfsGetWeight(graph, start):
     return totalWeight
 
 
-# Pass in the next move
+# Pass in the next move, return if there is a guaranteed dead end after MAX_INSTANCE bfs entries
 def bfsGetPossibleMove(graph, start):
     MAX_INSTANCE = 40
     visitedInstance = 0 # number of instances we are going to look
@@ -112,7 +112,7 @@ def bfsGetPossibleMove(graph, start):
                     possibleWallObject = graph.weights.get(possibleWall, 0) # get possible wall
                     if possibleWallObject != 0: #if we found a wall
                         distanceFromStart = heuristic(possibleWall, start) # get # of moves to get to neighbour 
-                       if possibleWallObject[1] < distanceFromStart: # if by the time get there the wall is gone
+                        if possibleWallObject[1] < distanceFromStart: # if by the time get there the wall is gone
                             visited.add(possibleWall)
                             q.put(possibleWall)
         visitedInstance += 1
