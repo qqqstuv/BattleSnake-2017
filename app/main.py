@@ -33,7 +33,7 @@ def move():
     data = bottle.request.json
     direction = helper.handler(data.get('you'), data.get('snakes'), data.get('food'))
     end = timer()
-    print "TOTAL RESPONSE TIME: %.3f" % ((end - start) * 1000)
+    print "TOTAL RESPONSE TIME: %.1f" % ((end - start) * 1000)
     return {
         'move': direction,
         'taunt': 'battlesnake-python!'
