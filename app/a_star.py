@@ -1,4 +1,4 @@
-import collections
+import collections, heapq
 
 
 class SimpleGraph:
