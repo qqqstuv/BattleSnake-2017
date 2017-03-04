@@ -56,8 +56,9 @@ def killSnakeMove(head, otherheads, graph):
 def getFoodMove(head, food, otherheads):
 	toFoodObject = findFood(head, food, otherheads) # (d from head to food, xy)
 	movePath = applyAStar(head, toFoodObject[1])
+	final = directionToPoint(head, movePath[1])
 	print("FOOD ORIENTED - FOOD OBJECT: %s MOVEPATH: %s FINAL STRING DECISION: %s" % (toFoodObject, movePath[1],final))
-	return directionToPoint(head, movePath[1]) # index 1 is because 0 is our goal
+	return final # index 1 is because 0 is our goal
 
 
 def makeWall(xy, index, length):
