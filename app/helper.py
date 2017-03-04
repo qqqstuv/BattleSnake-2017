@@ -37,9 +37,9 @@ def handler(id, snakeCoords, food):
 		print "FINAL STRING DECISION: " + final
 	else: # kill snakes
 		move = findEnemy(head, otherheads, graph)
-		if move == None: # Could not find a snake to go to
-			graph.weights = a_star.findHeatMap(start, graph.walls, graph.width, graph.height)
-			move = a_star.bfsGetSafeMove(start, graph)
+		if move == None: # Could not find a snake to go to, then get Safest Move
+			graph.weights = a_star.findHeatMap(head, graph.walls, graph.width, graph.height)
+			move = a_star.bfsGetSafeMove(head, graph)
 		
 		final = directionToPoint(head, move)
 
