@@ -33,9 +33,7 @@ def start():
 def move():
     start = timer()
     data = bottle.request.json
-    # TODO: Do things with data
-    directions = helper.possibleMove(data.get('you'), data.get('snakes'), data.get('food'))
-
+    directions = helper.handler(data.get('you'), data.get('snakes'), data.get('food'))
     end = timer()
     # print "TIME TO RESPONSE: %.6f" % (end - start)
     return {
