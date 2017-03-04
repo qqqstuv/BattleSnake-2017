@@ -86,8 +86,8 @@ def applyAStar(head, foodCoord):
 	while temp != None:
 		movePath.append(temp)
 		temp = came_from.get(temp)
-	movePath.append(tupleFood) # add it so that the snake doesn't get confused at the last one it eats
 	movePath.reverse()
+	movePath.append(tupleFood) # add it so that the snake doesn't get confused at the last one it eats
 	return movePath
 
 
