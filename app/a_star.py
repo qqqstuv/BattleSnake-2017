@@ -53,7 +53,7 @@ def a_star_search(graph, start, goal):
                 came_from[next] = current # set the parent of the neighbour, which is the current node
     
     # Get the movePath list
-    temp = came_from.get(start)
+    temp = came_from.get(goal)
     movePath = []
     while temp != None:
         movePath.append(temp)
