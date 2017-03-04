@@ -60,9 +60,9 @@ def a_star_search(graph, start, goal):
     movePath.reverse()
     movePath.append(goal) # add it so that the snake doesn't get confused at the last one it eats
 
-    if movePath.length == 1: # if there is no possible move generated from AStar
+    if len(movePath) == 1: # if there is no possible move generated from AStar
         possibleMoves = graph.neighbors(start)
-        if possibleMoves.length == 2:
+        if len(possibleMoves) == 2:
             WeightList = []
             for possibleMove in possibleMoves:
                 WeightList.append((bfsGetWeight(graph, possibleMove), possibleMove))
