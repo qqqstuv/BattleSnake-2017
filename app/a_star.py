@@ -77,7 +77,7 @@ def bfsGetSafeMove(start, graph):
     for possibleMove in possibleMoves:
         WeightList.append((bfsGetWeight(graph, possibleMove), possibleMove))
     move = min(WeightList, key = lambda t: t[1])
-    return move[1]
+    return move
 
 def bfsGetWeight(graph, start):
     MAX_INSTANCE = 40
