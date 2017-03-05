@@ -126,7 +126,7 @@ def bfsEnemy(graph, head):
     pass
 
 
-# walls is ((x,y), weight)
+# walls is [((x,y), weight)]
 def findHeatMap(head, headList, walls, width, height):
     num = 15 #has to be odd
     threatDepthConstant = 5 #has to be odd divided by 2
@@ -135,12 +135,14 @@ def findHeatMap(head, headList, walls, width, height):
     theta = 1.5 # coefficient for duration
     defaultHeadWeight = theta*15 #snakeHeadWeight multiplier
     alpha = None
+    print ("OTHER heads and duration", headList)
+    print ("GRAPH walls ", walls)
     for i in headList:
         try:
             walls.remove(i)
         except Exception, e:
             print ("BUGG", i)
-        walls.append((i[0],defaultHeadWeight))
+        walls.append((i[0],i[1]+defaultHeadWeight))
     walls = addBorders(walls, width, height, borderWeight) #adds the borders to the list of walls
     x_Size = assignStartEnd(head, num, width)
     y_Size = assignStartEnd(head, num, height)
