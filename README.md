@@ -8,17 +8,19 @@ This AI client uses the [bottle web framework](http://bottlepy.org/docs/dev/inde
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
-This code uses ideas and reference from [Game Programming](http://theory.stanford.edu/~amitp/GameProgramming/)
+This idea is inspired from [Game Programming](http://theory.stanford.edu/~amitp/GameProgramming/)
 
-Algorithms used:
+#### Algorithms used:
 * BFS: calculate if the snake is likely to be cornered in x move
 * Dijkstra: calculate if the snake is likely to be cornered, taken surrounding weights into consideration
 * A*: calculate the shortest path to a point, taken surrounding weights into consideration
 
-The approach: The snake will make a move based on the intention: get food, trap a snake, or safe move
+#### The approach: The snake will make a move based on the intention: get food, trap a snake, or safe move
 * Get food gets the closest food and run A* to find a path to get there
-* Trap a snake runs BFS and Dijkstra to see if a snake is trapped then find a path to block their exit
-* Safe move: do Dijkstra from our head and approximate a safe point and navigate there
+* Trap a snake runs BFS and Dijkstra to see if a snake is trapped then find a path to get there to block their exit
+* Safe move: do Dijkstra from our head, approximate a safe point and navigate there
+
+The kind of moves the snake will make take into account the number of snakes on the board and levels of food
 
 #### You will need...
 
