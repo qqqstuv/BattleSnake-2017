@@ -101,14 +101,18 @@ def makeWall(xy, index, length):
 	return ((xy[0],xy[1]), length - index)
 
 def directionToPoint(start, goal):
-	if(start[0] == goal[0] - 1):
-		return 'right'
-	if(start[0] == goal[0] + 1):
-		return 'left'
-	if(start[1] == goal[1] + 1):
-		return 'up'
-	if(start[1] == goal[1] - 1):
-		return 'down'
+	neighbors = graph.neighbors(start)
+	for index in neighbors:
+		if goal == index:
+			if(start[0] == goal[0] - 1):
+				return 'right'
+			if(start[0] == goal[0] + 1):
+				return 'left'
+			if(start[1] == goal[1] + 1):
+				return 'up'
+			if(start[1] == goal[1] - 1):
+				return 'down'
+	return neighbors[0]
 
 # Check four possible moves of the head
 def possibleAround(head, directions):
