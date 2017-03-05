@@ -27,6 +27,9 @@ def handler(id, snakeCoords, food):
 			otherheadsAndDuration.append(makeWall(snake.get('coords')[0], 0,length)) # tuple of (coord, duration) default 0
 			otherSnakeLengths.append(length)
 			otherheadsAndHealth.append((snake.get('coords')[0], snake.get('health_points')))
+
+	print "OTHER heads and duration", otherheadsAndDuration
+	print "GRAPH walls ", graph.walls
 	for xy in food:
 		graph.food.append( (xy[0],xy[1]) )
 	#Sort snakehead list based on health
