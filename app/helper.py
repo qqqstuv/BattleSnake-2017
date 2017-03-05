@@ -62,8 +62,13 @@ def killSnakeMove(head, otherheadsAndDuration, otherheads, graph):
 		print ("KILL MOVE")
 	return directionToPoint(head, move)
 
+def merge_two_dicts(x, y):
+    z = x.copy()
+    z.update(y)
+    return z
+
 def updateHeatMap(head, otherheadsAndDuration, graph, otherheads):
-	graph.weights = a_star.findHeatMap(head, otherheadsAndDuration, graph.walls, graph.width, graph.height)
+	graph.weights = merge_two_dicts( graph.weights, a_star.findHeatMap(head, otherheadsAndDuration, graph.walls, graph.width, graph.height)) 
 
 
 def findEnemy(head, otherheadsAndDuration, otherheads, graph):
