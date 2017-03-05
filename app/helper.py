@@ -101,7 +101,7 @@ def makeWall(xy, index, length):
 	return ((xy[0],xy[1]), length - index)
 
 def directionToPoint(start, goal):
-	neighbors = graph.neighbors(start)
+	neighbors = settings.getMap().neighbors(start)
 	for index in neighbors:
 		if goal == index:
 			if(start[0] == goal[0] - 1):
