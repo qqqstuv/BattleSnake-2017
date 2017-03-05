@@ -63,7 +63,7 @@ def a_star_search(graph, start, goal):
     # print "DEBUG MOVEPATH", movePath
     if len(movePath) == 1: # if there is no possible move generated from AStar
         move = bfsGetSafeMove(start, graph)
-        movePath.append(move[1])
+        movePath.append(move[0])
         print ("SAFE MOVE")
     else:
         print ("FOOD MOVE")
@@ -77,7 +77,7 @@ def bfsGetSafeMove(start, graph):
     for possibleMove in possibleMoves:
         WeightList.append((bfsGetWeight(graph, possibleMove), possibleMove))
     move = min(WeightList, key = lambda t: t[1])
-    return move
+    return move[1]
 
 def bfsGetWeight(graph, start):
     MAX_INSTANCE = 40
