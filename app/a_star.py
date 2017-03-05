@@ -130,7 +130,7 @@ def bfsEnemy(graph, head):
 def findHeatMap(head, headList, walls, width, height):
     # print ("OTHER heads and duration", headList)
     # print ("GRAPH walls ", walls)
-    num = 15 #has to be odd
+    num = 27 #has to be odd
     threatDepthConstant = 5 #has to be odd divided by 2
     borderWeight = 3 #borderWeight
     beta = 4 # standard coefficient for border
