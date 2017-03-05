@@ -139,7 +139,7 @@ def findHeatMap(head, headList, walls, width, height):
         try:
             walls.remove(i)
         except Exception, e:
-            print i
+            print ("BUGG", i)
         walls.append((i[0],defaultHeadWeight))
     walls = addBorders(walls, width, height, borderWeight) #adds the borders to the list of walls
     x_Size = assignStartEnd(head, num, width)
