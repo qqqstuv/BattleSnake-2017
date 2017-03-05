@@ -53,7 +53,7 @@ def handler(id, snakeCoords, food):
 # Find a snake and try to corner it
 def killSnakeMove(head, otherheadsAndDuration, otherheads, graph):
 	move = None
-	# move = findEnemy(head, otherheadsAndDuration, otherheads, graph)
+	move = findEnemy(head, otherheadsAndDuration, otherheads, graph)
 	if move == None: # Could not find a snake to go to, then get Safest Move
 		updateHeatMap(head, otherheadsAndDuration, graph, otherheads)
 		move = a_star.bfsGetSafeMove(head, graph)
