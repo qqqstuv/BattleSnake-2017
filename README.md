@@ -8,6 +8,17 @@ This AI client uses the [bottle web framework](http://bottlepy.org/docs/dev/inde
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
+Algorithms used:
+	- BFS: calculate if the snake is likely to be cornered in x move
+	- Dijkstra: calculate if the snake is likely to be cornered, taken surrounding weights into consideration
+	- A*: calculate the shortest path to a point, taken surrounding weights into consideration
+
+The approach:
+	- The snake will make a move based on the intention: get food, trap a snake, or safe move
+	- Get food gets the closest food and run A* to find a path to get there
+	- Trap a snake runs BFS and Dijkstra to see if a snake is trapped then find a path to block their exit
+	- Safe move: do Dijkstra from our head and approximate a safe point and navigate there
+
 #### You will need...
 
 * a working Python 2.7 development environment ([getting started guide](http://hackercodex.com/guide/python-development-environment-on-mac-osx/))
